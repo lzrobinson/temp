@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:lets_study_kitti/Score.dart' show Score;
 
 class Rating extends StatelessWidget {
-  Score difficulty = new Score(0);
-  Score interest = new Score(0);
-  Score teaching = new Score(0);
+  Score difficulty = new Score(-1);
+  Score interest = new Score(-1);
+  Score teaching = new Score(-1);
 
   Rating(int difficulty, int interest, int teaching) {
     this.difficulty = new Score(difficulty);
@@ -13,9 +13,7 @@ class Rating extends StatelessWidget {
   }
 
   Widget build(BuildContext context) { 
-    return Card(
-      elevation: 24,
-      child: Column(children: [
+    return Column(children: [
         Row(children: [
           difficulty,
           const Text("Difficulty"),
@@ -28,7 +26,6 @@ class Rating extends StatelessWidget {
           teaching,
           const Text("Teaching Quality"),
         ]),
-      ],)  
-      );
+      ],);
   }
 }

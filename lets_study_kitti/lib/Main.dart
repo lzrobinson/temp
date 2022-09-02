@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lets_study_kitti/Rating.dart' show Rating;
+import 'package:lets_study_kitti/Review.dart' show Review;
 
 
 void main() {
@@ -34,13 +34,20 @@ class TutorialHome extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
-        shrinkWrap: true,
-        children: [
-          reviews,
-          const Text("What a good review"),
-        ],
-      ),
+      body: Center(child: Container(
+        alignment: Alignment.center,
+        width: MediaQuery.of(context).size.width - 100,
+        child: Card(
+          elevation: 20,
+          child: ListView(
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(10),
+            children: [
+            reviews,
+            ]
+          ),
+        )
+      )),
       floatingActionButton: const FloatingActionButton(
         tooltip: 'Add', // used by assistive technologies
         onPressed: null,
@@ -50,9 +57,9 @@ class TutorialHome extends StatelessWidget {
   }
 }
 
-var review1 = new Rating(2, 3, 4);
-var review2 = new Rating(5, 8, 9);
-var review3 = new Rating(4, 10, 8);
+var review1 = new Review(2, 3, 4, new Text('Boring and hard'));
+var review2 = new Review(5, 8, 9, new Text('Fantastic subject'));
+var review3 = new Review(4, 10, 8, new Text('Ehhhhh'));
 
 
 var reviews = ListView(children: [
