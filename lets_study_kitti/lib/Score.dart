@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lets_study_kitti/StarDisplay.dart' show StarDisplayWidget;
 
-final double IMG_SIZE = 15;
+const double IMG_SIZE = 15;
 
 class Score extends StatelessWidget {
   

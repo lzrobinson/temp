@@ -13,19 +13,37 @@ class Rating extends StatelessWidget {
   }
 
   Widget build(BuildContext context) { 
-    return Column(children: [
-        Row(children: [
-          difficulty,
-          const Text("Difficulty"),
+
+    return Row(children: [
+      Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              child: Text("Difficulty", style: TextStyle(fontSize: 14)),
+            )
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              child: Text("Interest Level", style: TextStyle(fontSize: 14)),
+            )
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              child: Text("Teaching Quality", style: TextStyle(fontSize: 14)),
+            )
+          )
         ]),
-        Row(children: [
-          interest,
-          const Text("Interest Level"),
-        ]),
-        Row(children: [
-          teaching,
-          const Text("Teaching Quality"),
-        ]),
-      ],);
+      SizedBox(width: 10),
+      Column(children: [
+        difficulty,
+        interest,
+        teaching,
+      ])
+    ]);
   }
 }

@@ -92,3 +92,5 @@ flutter:
   assets:
    - assets/images/paw.png
    - assets/images/fpaw.png
+   - assets/images/user.png
+   - assets/images/sen-turner.png

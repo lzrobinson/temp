@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lets_study_kitti/Review.dart' show Review;
+import 'package:lets_study_kitti/ProfileReview.dart' show ProfileReview;
 
 
 void main() {
@@ -57,13 +57,15 @@ class TutorialHome extends StatelessWidget {
   }
 }
 
-var review1 = new Review(2, 3, 4, new Text('Boring and hard'));
-var review2 = new Review(5, 8, 9, new Text('Fantastic subject'));
-var review3 = new Review(4, 10, 8, new Text('Ehhhhh'));
+var review1 = new ProfileReview.noPic(2, 3, 4, 'Boring and hard', 'Vinay', '(Major of Computing)');
+var review2 = new ProfileReview.noPic(5, 8, 9, 'Fantastic subject', 'Abrar', '(Major of Engineering)');
+var review3 = new ProfileReview(4, 10, 8, 'Ehhhhh', 'Sen','assets/images/sen-turner.png', '(Major of Data Science)');
 
 
 var reviews = ListView(children: [
   review1,
+  Divider(color: Colors.black, height: 30),
   review2,
+  Divider(color: Colors.black, height: 30),
   review3,
 ], shrinkWrap: true);
