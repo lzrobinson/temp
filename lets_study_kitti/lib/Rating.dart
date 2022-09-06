@@ -22,27 +22,30 @@ class Rating extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: Container(
-              child: Text("Difficulty", style: TextStyle(fontSize: 14)),
+              child: Text("Difficulty", style: TextStyle(fontSize: 15)),
             )
           ),
           Align(
             alignment: Alignment.centerRight,
             child: Container(
-              child: Text("Interest Level", style: TextStyle(fontSize: 14)),
+              child: Text("Interest Level", style: TextStyle(fontSize: 15)),
             )
           ),
           Align(
             alignment: Alignment.centerRight,
             child: Container(
-              child: Text("Teaching Quality", style: TextStyle(fontSize: 14)),
+              child: Text("Teaching Quality", style: TextStyle(fontSize: 15)),
             )
           )
         ]),
       SizedBox(width: 10),
-      Column(children: [
-        difficulty,
-        interest,
-        teaching,
+      Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          difficulty,
+          interest,
+          teaching,
       ])
     ]);
   }
