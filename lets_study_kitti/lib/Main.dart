@@ -1,66 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:lets_study_kitti/ProfileReview.dart' show ProfileReview;
+import 'package:lets_study_kitti/ReviewFormPage.dart' show ReviewFormPage;
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:intl/intl.dart';
 
 
-void main() {
-  runApp(
-    const MaterialApp(
-      title: 'Flutter Tutorial',
-      home: TutorialHome(),
-    ),
-  );
-}
+void main() => runApp(const MyApp());
 
-class TutorialHome extends StatelessWidget {
-  const TutorialHome({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Scaffold is a layout for
-    // the major Material Components.
-    return Scaffold(
-      appBar: AppBar(
-        leading: const IconButton(
-          icon: Icon(Icons.menu),
-          tooltip: 'Navigation menu',
-          onPressed: null,
-        ),
-        title: Text('Example title'),
-        actions: const [
-          IconButton(
-            icon: Icon(Icons.search),
-            tooltip: 'Search',
-            onPressed: null,
-          ),
-        ],
-      ),
-      body: Center(child: Container(
-        alignment: Alignment.center,
-        width: MediaQuery.of(context).size.width - 100,
-        child: Card(
-          elevation: 20,
-          child: ListView(
-            shrinkWrap: true,
-            padding: const EdgeInsets.all(10),
-            children: [
-            reviews,
-            ]
-          ),
-        )
-      )),
-      floatingActionButton: const FloatingActionButton(
-        tooltip: 'Add', // used by assistive technologies
-        onPressed: null,
-        child: Icon(Icons.add),
-      ),
+    return MaterialApp(
+      title: 'Flutter FormBuilder Demo',
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        FormBuilderLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: FormBuilderLocalizations.delegate.supportedLocales,
+      home: new ReviewFormPage(),
     );
   }
 }
+
+
+
+/*
 
 var review1 = new ProfileReview.noPic(2, 3, 4, 'Boring and hard', 'Vinay', '(Major of Computing)', 'Paul Jones', 10);
 var review2 = new ProfileReview.noPic(5, 8, 9, 'Fantastic subject', 'Abrar', '(Major of Engineering)', 'Mr Man', 5);
 var review3 = new ProfileReview(4, 10, 8, 'Ehhhhh', 'Sen','assets/images/sen-turner.png', '(Major of Data Science)', 'Sen', 3);
 
+var form = new ReviewForm();
 
 var reviews = ListView(children: [
   review1,
@@ -69,3 +44,4 @@ var reviews = ListView(children: [
   Divider(color: Colors.black, height: 30),
   review3,
 ], shrinkWrap: true);
+*/
