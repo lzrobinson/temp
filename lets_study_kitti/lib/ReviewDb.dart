@@ -12,7 +12,7 @@ class ReviewDb{
     return database;
   }
 
-  _onCreatingDatabase(Database database) async{
+  _onCreatingDatabase(Database database, int version) async{
     await database.execute(
       "CREATE TABLE reviews(ReviewID INTEGER PRIMARY KEY, SubjectCode INTEGER, UserID INTEGER, Lecturer TEXT, Compulsory INTEGER, ExamWeightage INTEGER, Period TEXT, TeachingQuality INTEGER, Difficulty INTEGER, Interesting INTEGER, Review TEXT, Recommended INTEGER)");
   }
