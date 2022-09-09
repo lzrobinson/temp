@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
+import 'package:sqflite/sqflite.dart';
 
 const OUTLINE_COLOR = Color.fromARGB(100, 0, 0, 0);
 const BOX_COLOR = Color.fromARGB(255, 254, 244, 225);
@@ -99,9 +101,8 @@ class ReviewElements extends StatelessWidget{
                           ),
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(),
-                            FormBuilderValidators.numeric(),
-                            FormBuilderValidators.minLength(5),
-                            FormBuilderValidators.maxLength(5),
+                            FormBuilderValidators.minLength(9, errorText: 'Should be 9 characters long'),
+                            FormBuilderValidators.maxLength(9, errorText: 'Should be 9 characters long'),
                           ])
                         )
                       ),  
@@ -246,10 +247,10 @@ class ReviewElements extends StatelessWidget{
                                 border: InputBorder.none,
                               ),
                               validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.numeric(),
-                                FormBuilderValidators.max(10),
-                                FormBuilderValidators.min(0),
-                              ])
+                                FormBuilderValidators.numeric(errorText: '0-10'),
+                                FormBuilderValidators.max(10, errorText: '0-10'),
+                                FormBuilderValidators.min(0, errorText: '0-10'),
+                              ])  
                             )
                           ),  
                         ),
@@ -289,10 +290,10 @@ class ReviewElements extends StatelessWidget{
                               ),
                               keyboardType: TextInputType.numberWithOptions(decimal: true),
                               validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.numeric(),
-                                FormBuilderValidators.max(10),
-                                FormBuilderValidators.min(0),
-                              ])                            
+                                FormBuilderValidators.numeric(errorText: '0-10'),
+                                FormBuilderValidators.max(10, errorText: '0-10'),
+                                FormBuilderValidators.min(0, errorText: '0-10'),
+                              ])                             
                             )
                           ),  
                         ),
@@ -330,10 +331,11 @@ class ReviewElements extends StatelessWidget{
                                 border: InputBorder.none,
                               ),
                               validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.numeric(),
-                                FormBuilderValidators.max(10),
-                                FormBuilderValidators.min(0),
-                              ])
+                                FormBuilderValidators.numeric(errorText: '0-10'),
+                                FormBuilderValidators.max(10, errorText: '0-10'),
+                                FormBuilderValidators.min(0, errorText: '0-10'),
+                                
+                              ])     
                             )
                           ),  
                         ),
@@ -418,27 +420,34 @@ class ReviewElements extends StatelessWidget{
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                MaterialButton(
-                  child: Text("Submit"),
-                  onPressed: () {
-                    final validationSuccess = _formKey.currentState?.validate();
-                    if(validationSuccess ?? false) {
-                      _formKey.currentState?.save();
-                      debugPrint(_formKey.currentState?.value.toString());
-                      debugPrint("validated");
-                    }
-                    else {
-                      debugPrint(_formKey.currentState?.value.toString());
-                      debugPrint('validation failed');
+                Container(
+                  padding: EdgeInsets.only(bottom: 20.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 250, 172, 26),
+                        border: Border.all(color: OUTLINE_COLOR)
+                      ),
+                    child: MaterialButton(
+                      child: Text("Submit", style: TextStyle(fontWeight: FontWeight.bold,)),
+                      onPressed: () {
+                        final validationSuccess = _formKey.currentState?.validate();
+                        if(validationSuccess ?? false) {
+                          _formKey.currentState?.save();
+                          debugPrint(_formKey.currentState?.value.toString());
+                          debugPrint("validated");
+                        }
+                        else {
+                          debugPrint(_formKey.currentState?.value.toString());
+                          debugPrint('validation failed');
+                        }
                       }
-                  }
+                    )
                 )
+                )
+                
               ]
             )
       ],      
     );
    }
 }
-
-
-

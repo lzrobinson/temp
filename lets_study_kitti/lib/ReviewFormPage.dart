@@ -29,12 +29,15 @@ class ReviewFormPage extends StatelessWidget {
           ),
         ],
       ),
-      body: new ReviewForm(),
-      floatingActionButton: const FloatingActionButton(
-        tooltip: 'Add', // used by assistive technologies
-        onPressed: null,
-        child: Icon(Icons.add),
-      ),
+      body: Container(
+        child: new ReviewForm(),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/fpaw.png'),
+            fit: BoxFit.cover,
+          )
+        )
+      ) 
     );
   }
 }
