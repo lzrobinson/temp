@@ -6,7 +6,7 @@ class ReviewDb{
 
   setDatabase() async{
 
-    var directory = await getApplicationDocumentDirectory();
+    var directory = await getApplicationDocumentsDirectory();
     var path = join(directory.path, 'db_review_sqflite');
     var database = await openDatabase(path, version: 1, onCreate: _onCreatingDatabase);
     return database;
