@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lets_study_kitti/Screens/Subject.dart' show Subject;
+import 'package:lets_study_kitti/ProfileReview.dart' show ProfileReview;
+const BOUNDARY_SIZE = 100.0;
 
 class SubjectPage extends StatelessWidget {
 
@@ -9,7 +10,6 @@ class SubjectPage extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Colors.transparent,
       appBar: AppBar(
         leading: const IconButton(
           icon: Icon(Icons.menu),
@@ -25,7 +25,39 @@ class SubjectPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Subject()
+      body: ListView(
+        shrinkWrap: true,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(BOUNDARY_SIZE, 25, 0, 25),
+              child: Text(
+                getSubjectName(subjectCode) + ' - ' + subjectCode,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)
+              ),
+            ),
+          ),
+        ]
+      )
     );
   }
+
+  // Set up all these methods using database 
+
+  // Given subject code get subject name
+
+  String getSubjectName(String subjectCode) {
+    String subjectName = 'IT Project';
+    return subjectName;
+  }
+
+  // Get all reviews for the specified subject code
+
+  List<ProfileReview> getSubjectReviews(String subjectCode) {
+    List<ProfileReview> reviews = [];
+
+    return reviews;
+  }
+
 }

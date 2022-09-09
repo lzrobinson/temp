@@ -10,6 +10,7 @@ class ReviewFormPage extends StatelessWidget {
     // Scaffold is a layout for
     // the major Material Components.
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         leading: const IconButton(
           icon: Icon(Icons.menu),
