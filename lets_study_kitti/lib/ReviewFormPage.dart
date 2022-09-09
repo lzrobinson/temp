@@ -31,13 +31,13 @@ class ReviewFormPage extends StatelessWidget {
       ),
       body: Container(
         child: new ReviewForm(),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/fpaw.png'),
+            image: AssetImage('assets/images/background.png'),
             fit: BoxFit.cover,
-          )
+          ),
         )
-      ) 
+      )
     );
   }
 }
