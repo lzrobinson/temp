@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lets_study_kitti/ReviewFormPage.dart' show ReviewFormPage;
+import 'package:lets_study_kitti/Screens/ReviewFormPage.dart' show ReviewFormPage;
+import 'package:lets_study_kitti/Screens/SubjectPage.dart' show SubjectPage;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -22,12 +23,17 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: FormBuilderLocalizations.delegate.supportedLocales,
-      home: new ReviewFormPage(),
+      home: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/background.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SubjectPage('30023')),
     );
   }
 }
-
-
 
 /*
 

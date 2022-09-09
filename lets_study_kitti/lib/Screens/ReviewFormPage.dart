@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lets_study_kitti/ReviewForm.dart' show ReviewForm;
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:intl/intl.dart';
+import 'package:lets_study_kitti/Screens/ReviewForm.dart' show ReviewForm;
 
 class ReviewFormPage extends StatelessWidget {
   const ReviewFormPage({super.key});
@@ -20,7 +16,7 @@ class ReviewFormPage extends StatelessWidget {
           tooltip: 'Navigation menu',
           onPressed: null,
         ),
-        title: Text('Example title'),
+        title: const Text('Example title'),
         actions: const [
           IconButton(
             icon: Icon(Icons.search),
@@ -29,15 +25,7 @@ class ReviewFormPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        child: new ReviewForm(),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/background.png'),
-            fit: BoxFit.cover,
-          ),
-        )
-      )
+      body: const ReviewForm()
     );
   }
 }

@@ -26,7 +26,7 @@ class ReviewForm extends StatefulWidget {
 
 class _ReviewFormState extends State<ReviewForm> {
 
-  ReviewForm(){}
+  int userID = 0;
 
   Widget build(BuildContext context) {
     return ListView(
@@ -158,8 +158,8 @@ class ReviewElements extends StatelessWidget{
                         child: FormBuilderDropdown(
                           name: 'Semester Taken',
                           decoration: InputDecoration(
-                            border: new OutlineInputBorder(
-                              borderSide: new BorderSide(),
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide(),
                               borderRadius: BorderRadius.all(Radius.circular(20))
                             ),
                             labelText: 'Semester Taken',
@@ -184,12 +184,12 @@ class ReviewElements extends StatelessWidget{
                       ),  
                     ),
                   Container(
-                    padding: EdgeInsets.only(left: H_OFFSET, bottom: 20),
+                    padding: const EdgeInsets.only(left: H_OFFSET, bottom: 20),
                     alignment: Alignment.centerLeft,
                     child: Container(
                       width: BOX_WIDTH,
                       height: BOX_HEIGHT,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       decoration: BoxDecoration(
                         color: BOX_COLOR,
                         border: Border.all(color: OUTLINE_COLOR)
@@ -197,7 +197,7 @@ class ReviewElements extends StatelessWidget{
                       child: FormBuilderTextField(
                         cursorColor: Colors.black,
                         name: 'Lecturer',
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "Lecturer",
                           hintStyle: LABEL_FONT,
                           contentPadding: EdgeInsets.only(top: 5.0, bottom: 5.0),
@@ -210,7 +210,7 @@ class ReviewElements extends StatelessWidget{
                     alignment: Alignment.centerLeft,
                     child: Container(
                       padding: const EdgeInsets.fromLTRB(H_OFFSET, 25, 0, 25),
-                      child: Text(
+                      child: const Text(
                         'Subject Scores',
                        style: SECTION_FONT
                         )
@@ -223,7 +223,7 @@ class ReviewElements extends StatelessWidget{
                       children: [
                         Container(
                           width: BOX_WIDTH,
-                          child: Text("Difficulty",
+                          child: const Text("Difficulty",
                             style: LABEL_FONT
                           )
                         ),
@@ -232,16 +232,16 @@ class ReviewElements extends StatelessWidget{
                           child: Container(
                             width: BOX_HEIGHT,
                             height: BOX_HEIGHT,
-                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
                               color: BOX_COLOR,
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                              borderRadius: const BorderRadius.all(Radius.circular(20)),
                               border: Border.all(color: OUTLINE_COLOR)
                             ),
                             child: FormBuilderTextField(
                               cursorColor: Colors.black,
                               name: 'Difficulty',
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 contentPadding:
                                     EdgeInsets.only(top: 5.0, bottom: 5.0),
                                 border: InputBorder.none,
@@ -259,13 +259,13 @@ class ReviewElements extends StatelessWidget{
                       
                   ),
                   Container(
-                    padding: EdgeInsets.only(left: H_OFFSET, bottom: 10),
+                    padding: const EdgeInsets.only(left: H_OFFSET, bottom: 10),
                     alignment: Alignment.centerLeft,
                     child: Row(
                       children: [
                         Container(
                           width: BOX_WIDTH,
-                          child: Text("How fun/interesting you found it",
+                          child: const Text("How fun/interesting you found it",
                             style: LABEL_FONT,
                           )
                         ),
@@ -274,21 +274,21 @@ class ReviewElements extends StatelessWidget{
                           child: Container(
                             width: BOX_HEIGHT,
                             height: BOX_HEIGHT,
-                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
                               color: BOX_COLOR,
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                              borderRadius: const BorderRadius.all(Radius.circular(20)),
                               border: Border.all(color: OUTLINE_COLOR)
                             ),
                             child: FormBuilderTextField(
                               cursorColor: Colors.black,
                               name: 'Interest',
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 contentPadding:
                                     EdgeInsets.only(top: 5.0, bottom: 5.0),
                                 border: InputBorder.none,
                               ),
-                              keyboardType: TextInputType.numberWithOptions(decimal: true),
+                              keyboardType: const TextInputType.numberWithOptions(decimal: true),
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.numeric(errorText: '0-10'),
                                 FormBuilderValidators.max(10, errorText: '0-10'),
@@ -301,13 +301,13 @@ class ReviewElements extends StatelessWidget{
                     )
                   ),
                   Container(
-                    padding: EdgeInsets.only(left: H_OFFSET, bottom: 10),
+                    padding: const EdgeInsets.only(left: H_OFFSET, bottom: 10),
                     alignment: Alignment.centerLeft,
                     child: Row(
                       children: [
                         Container(
                           width: BOX_WIDTH,
-                          child: Text("Teaching Quality",
+                          child: const Text("Teaching Quality",
                             style: LABEL_FONT,
                           )
                         ),
@@ -316,18 +316,17 @@ class ReviewElements extends StatelessWidget{
                           child: Container(
                             width: BOX_HEIGHT,
                             height: BOX_HEIGHT,
-                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
                               color: BOX_COLOR,
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                              borderRadius: const BorderRadius.all(Radius.circular(20)),
                               border: Border.all(color: OUTLINE_COLOR)
                             ),
                             child: FormBuilderTextField(
                               cursorColor: Colors.black,
                               name: 'Teaching',
-                              decoration: InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.only(top: 5.0, bottom: 5.0),
+                              decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.only(top: 5.0, bottom: 5.0),
                                 border: InputBorder.none,
                               ),
                               validator: FormBuilderValidators.compose([
@@ -344,13 +343,13 @@ class ReviewElements extends StatelessWidget{
                       
                   ),
                   Container(
-                    padding: EdgeInsets.only(left: H_OFFSET, top: 10, bottom: 10),
+                    padding: const EdgeInsets.only(left: H_OFFSET, top: 10, bottom: 10),
                     alignment: Alignment.centerLeft,
                     child: Row(
                       children: [
                         Container(
                           width: BOX_WIDTH/2,
-                          child: Text("Recommend",
+                          child: const Text("Recommend",
                             style: LABEL_FONT,
                           )
                         ),
@@ -359,7 +358,7 @@ class ReviewElements extends StatelessWidget{
                           child: Container(
                             width: BOX_WIDTH/2,
                             height: BOX_HEIGHT,
-                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
                             decoration: BoxDecoration(
                               color: BOX_COLOR,
                               borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -367,7 +366,7 @@ class ReviewElements extends StatelessWidget{
                             ),
                             child: FormBuilderDropdown(
                               name: 'Recommended',
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: BOX_COLOR)),
                               ),
@@ -388,17 +387,17 @@ class ReviewElements extends StatelessWidget{
                       alignment: Alignment.centerLeft,
                       child: Container(
                         padding: const EdgeInsets.fromLTRB(H_OFFSET, 25, 0, 20),
-                        child: Text(
+                        child: const Text(
                           'Subject Review',
                           style: SECTION_FONT
                         )
                       )
                     ),
                   Container(
-                  padding: EdgeInsets.symmetric(horizontal: H_OFFSET),
+                  padding: const EdgeInsets.symmetric(horizontal: H_OFFSET),
                   child: Container(
                     height: 360,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     decoration: BoxDecoration(
                       color: BOX_COLOR,
                       border: Border.all(color: OUTLINE_COLOR)
@@ -406,7 +405,7 @@ class ReviewElements extends StatelessWidget{
                     child: FormBuilderTextField(
                       cursorColor: Colors.black,
                       name: 'Review',
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         contentPadding:
                           EdgeInsets.only(top: 5.0, bottom: 5.0),
                           border: InputBorder.none,
@@ -416,7 +415,7 @@ class ReviewElements extends StatelessWidget{
                 )
                 ],)
               ),
-            SizedBox(height:30),
+            const SizedBox(height:30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -428,13 +427,21 @@ class ReviewElements extends StatelessWidget{
                         border: Border.all(color: OUTLINE_COLOR)
                       ),
                     child: MaterialButton(
-                      child: Text("Submit", style: TextStyle(fontWeight: FontWeight.bold,)),
+                      child: const Text("Submit", style: TextStyle(fontWeight: FontWeight.bold,)),
                       onPressed: () {
-                        final validationSuccess = _formKey.currentState?.validate();
-                        if(validationSuccess ?? false) {
+                        final validationSuccess = _formKey.currentState!.validate();
+                        if(validationSuccess == true) {
                           _formKey.currentState?.save();
 
-
+                          uploadToDatabase(_formKey.currentState!.fields['Subject Code']!.value.toString(),
+                              _formKey.currentState!.fields['Year Taken']!.value.toString(),
+                              _formKey.currentState!.fields['Semester Taken']!.value.toString(),
+                              _formKey.currentState!.fields['Lecturer']!.value.toString(),
+                              _formKey.currentState!.fields['Difficulty']!.value,
+                              _formKey.currentState!.fields['Interest']!.value,
+                              _formKey.currentState!.fields['Teaching']!.value,
+                              _formKey.currentState!.fields['Recommended']!.value.toString(),
+                              _formKey.currentState!.fields['Review']!.value.toString(), 10);
 
                           debugPrint(_formKey.currentState?.value.toString());
                           debugPrint("validated");
@@ -455,11 +462,15 @@ class ReviewElements extends StatelessWidget{
    }
 
 
+  void rn(String string) {
+    debugPrint(string);
+  }
+
   // Database methods to implement
 
-  void uploadToDatabase(String subjectCode, String YearTaken, String SemTaken, String Lecturer, 
+  void uploadToDatabase(String subjectCode, String yearTaken, String semTaken, String lecturer, 
                       double difficulty, double interest, double teachingQuality, String recommend,
-                      String reviewText) {
+                      String reviewText, int userID) {
     
     
 
