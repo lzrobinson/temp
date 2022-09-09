@@ -29,7 +29,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+<<<<<<< HEAD
   flutter_form_builder: ^7.6.0
+=======
+  sqflite: ^2.0.3+1
+  path_provider: ^2.0.11
+>>>>>>> 5062888 (added sqflite dependencies and basic code for review db)
 
 
   # The following adds the Cupertino Icons font to your application.
