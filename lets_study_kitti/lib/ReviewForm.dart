@@ -433,6 +433,9 @@ class ReviewElements extends StatelessWidget{
                         final validationSuccess = _formKey.currentState?.validate();
                         if(validationSuccess ?? false) {
                           _formKey.currentState?.save();
+
+
+
                           debugPrint(_formKey.currentState?.value.toString());
                           debugPrint("validated");
                         }
@@ -450,4 +453,16 @@ class ReviewElements extends StatelessWidget{
       ],      
     );
    }
+
+
+  // Database methods to implement
+
+  void uploadToDatabase(String subjectCode, String YearTaken, String SemTaken, String Lecturer, 
+                      double difficulty, double interest, double teachingQuality, String recommend,
+                      String reviewText) {
+    
+    
+
+  }
+
 }
