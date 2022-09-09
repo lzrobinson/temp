@@ -38,6 +38,12 @@ class SubjectPage extends StatelessWidget {
               ),
             ),
           ),
+          Container(
+            padding: EdgeInsets.only(left: BOUNDARY_SIZE, right: BOUNDARY_SIZE),
+            child: Card(
+            child: ListView(children: getSubjectReviews(subjectCode), shrinkWrap: true)
+            )
+          )
         ]
       )
     );
@@ -57,6 +63,16 @@ class SubjectPage extends StatelessWidget {
   List<ProfileReview> getSubjectReviews(String subjectCode) {
     List<ProfileReview> reviews = [];
 
+    // Below code is just for front end testing
+
+    var review1 = new ProfileReview.noPic(2, 3, 4, 'Boring and hard', 'Vinay', '(Major of Computing)', 'Paul Jones', 10, 'yes', '2021', 'Semester 1');
+    var review2 = new ProfileReview.noPic(5, 8, 9, 'Fantastic subject', 'Abrar', '(Major of Engineering)', 'Mr Man', 5, 'no', '2020', 'Semester 1');
+    var review3 = new ProfileReview(4, 10, 8, 'Ehhhhh', 'Sen','assets/images/sen-turner.png', '(Major of Data Science)', 'Sen', 3, 'no', '2019', 'Semester 2');
+    
+    reviews.add(review1);
+    reviews.add(review2);
+    reviews.add(review3);
+    
     return reviews;
   }
 

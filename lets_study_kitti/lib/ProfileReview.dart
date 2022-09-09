@@ -13,15 +13,15 @@ class ProfileReview extends StatelessWidget {
     backgroundImage: NetworkImage('assets/images/user.png'),
   );
 
-  ProfileReview.noPic(int difficulty, int interest, int teaching, String reviewTxt, String username, String major, String lecturer, int like_count) {
-    this.review = new Review(difficulty, interest, teaching, reviewTxt, lecturer, like_count);
+  ProfileReview.noPic(int difficulty, int interest, int teaching, String reviewTxt, String username, String major, String lecturer, int like_count, String recommend, String year, String sem) {
+    this.review = new Review(difficulty, interest, teaching, reviewTxt, lecturer, like_count, recommend, year, sem);
     this.username = new Text(username,
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18));
     this.major = new Text(major, style: TextStyle(fontSize: 9));
   }
 
-  ProfileReview(int difficulty, int interest, int teaching, String reviewTxt, String username, String profile_pic, String major, String lecturer, int like_count) {
-    this.review = new Review(difficulty, interest, teaching, reviewTxt, lecturer, like_count);
+  ProfileReview(int difficulty, int interest, int teaching, String reviewTxt, String username, String profile_pic, String major, String lecturer, int like_count, String recommend, String year, String sem) {
+    this.review = new Review(difficulty, interest, teaching, reviewTxt, lecturer, like_count, recommend, year, sem);
     this.username = new Text(username,
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18));
     this.profile_pic = CircleAvatar(
