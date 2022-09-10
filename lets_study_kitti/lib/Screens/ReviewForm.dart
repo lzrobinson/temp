@@ -4,6 +4,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:lets_study_kitti/database/review_mapping.dart';
+import 'package:lets_study_kitti/database/review_db.dart';
 
 const OUTLINE_COLOR = Color.fromARGB(100, 0, 0, 0);
 const BOX_COLOR = Color.fromARGB(255, 254, 244, 225);
@@ -25,8 +27,6 @@ class ReviewForm extends StatefulWidget {
 
 
 class _ReviewFormState extends State<ReviewForm> {
-
-  int userID = 0;
 
   Widget build(BuildContext context) {
     return ListView(
@@ -433,7 +433,7 @@ class ReviewElements extends StatelessWidget{
                         if(validationSuccess == true) {
                           _formKey.currentState?.save();
 
-                          uploadToDatabase(_formKey.currentState!.fields['Subject Code']!.value.toString(),
+                          /* uploadToDatabase(_formKey.currentState!.fields['Subject Code']!.value.toString(),
                               _formKey.currentState!.fields['Year Taken']!.value.toString(),
                               _formKey.currentState!.fields['Semester Taken']!.value.toString(),
                               _formKey.currentState!.fields['Lecturer']!.value.toString(),
@@ -441,7 +441,7 @@ class ReviewElements extends StatelessWidget{
                               _formKey.currentState!.fields['Interest']!.value,
                               _formKey.currentState!.fields['Teaching']!.value,
                               _formKey.currentState!.fields['Recommended']!.value.toString(),
-                              _formKey.currentState!.fields['Review']!.value.toString(), 10);
+                              _formKey.currentState!.fields['Review']!.value.toString(), 10); */
 
                           debugPrint(_formKey.currentState?.value.toString());
                           debugPrint("validated");
@@ -469,11 +469,29 @@ class ReviewElements extends StatelessWidget{
   // Database methods to implement
 
   void uploadToDatabase(String subjectCode, String yearTaken, String semTaken, String lecturer, 
-                      double difficulty, double interest, double teachingQuality, String recommend,
+                      int difficulty, int interest, int teachingQuality, String recommend,
                       String reviewText, int userID) {
-    
-    
+
+      var review = ReviewMap();
+      var reviewData = ReviewData();
+
+      review.subjectCode = subjectCode;
+      review.userID = userID;
+      review.lecturer = lecturer;
+      review.compulsory = 1;
+      review.examWeightage = 0;
+      review.period = semTaken;
+      review.teachingQuality = teachingQuality;
+      review.difficulty = difficulty;
+      review.interesting = interest;
+      review.review = reviewText;
+      review.recommended = recommend;
+
+      var result = reviewData.saveReview(review);
+
+      print(result);
 
   }
+
 
 }

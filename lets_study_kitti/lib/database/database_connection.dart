@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-class ReviewDb{
+class DatabaseConnection{
 
   setDatabase() async{
 
@@ -14,6 +14,6 @@ class ReviewDb{
 
   _onCreatingDatabase(Database database, int version) async{
     await database.execute(
-      "CREATE TABLE reviews(ReviewID INTEGER PRIMARY KEY, SubjectCode INTEGER, UserID INTEGER, Lecturer TEXT, Compulsory INTEGER, ExamWeightage INTEGER, Period TEXT, TeachingQuality INTEGER, Difficulty INTEGER, Interesting INTEGER, Review TEXT, Recommended INTEGER)");
+      "CREATE TABLE reviews(reviewID BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, subjectCode TEXT NOT NULL, userID BIGINT NOT NULL, lecturer LONGTEXT NULL, compulsory TINYINT NOT NULL, examWeightage INT NOT NULL, period TEXT NOT NULL, teachingQuality INT NOT NULL, difficulty INT NOT NULL, interesting INT NOT NULL, review LONGTEXT NULL, recommended TEXT NOT NULL)");
   }
 }
