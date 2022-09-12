@@ -30,7 +30,8 @@ class MyApp extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        child: SubjectPage('30023')),
+        child: SubjectPage('30023')
+      ),
     );
   }
 }

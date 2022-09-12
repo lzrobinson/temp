@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lets_study_kitti/ProfileReview.dart' show ProfileReview;
+import 'package:url_launcher/url_launcher.dart';
 const BOUNDARY_SIZE = 100.0;
 const H_OFFSET = 30.0;
 const V_OFFSET = 15.0;
@@ -76,10 +77,8 @@ class SubjectPage extends StatelessWidget {
                 padding: const EdgeInsets.only(left: H_OFFSET, right: H_OFFSET, top: V_OFFSET, bottom: V_OFFSET),
                 child: Column(
                   children: [
-                    Row(
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        const SizedBox(
+                    Row(children: const [
+                        SizedBox(
                           width: 50, 
                           height: 30,
                           child: DecoratedBox(
@@ -88,8 +87,25 @@ class SubjectPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const Text('  Subject Information  ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18))
+                        Text('  Subject Information  ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                        SizedBox(
+                          width: 690, 
+                          height: 30,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.orange
+                            ),
+                          ),
+                        ),
                       ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(0, V_OFFSET, 0, 0),
+                      alignment: Alignment.centerLeft,
+                      child: InkWell(
+                        child: const Text('Handbook Link'),
+                        onTap: () => launchUrl(Uri.parse(getHandbookLink(subjectCode)))
+                      ),
                     )
                   ],
                 )
@@ -105,10 +121,37 @@ class SubjectPage extends StatelessWidget {
             child: Card(
               child: Container(
                 padding: const EdgeInsets.only(left: H_OFFSET, right: H_OFFSET, top: V_OFFSET, bottom: V_OFFSET),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: reviews
-                  )
+                child: Column(
+                  children: [
+                    Row(children: const [
+                        SizedBox(
+                          width: 50, 
+                          height: 30,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.orange
+                            ),
+                          ),
+                        ),
+                        Text('  Reviews  ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                        SizedBox(
+                          width: 780, 
+                          height: 30,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.orange
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height:V_OFFSET),
+                    ListView(
+                      shrinkWrap: true,
+                      children: reviews
+                    )
+                  ]
+                )
               )
             )
           )
@@ -173,6 +216,13 @@ class SubjectPage extends StatelessWidget {
     reviews.add(review3);
     
     return reviews;
+  }
+
+  // Get the handbook link given the subject code
+
+  String getHandbookLink(String subjectCode) {
+    String link = 'https://handbook.unimelb.edu.au/2020/subjects/comp30022';
+    return link;
   }
 
 }

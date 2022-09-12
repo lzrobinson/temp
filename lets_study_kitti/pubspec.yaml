@@ -33,6 +33,7 @@ dependencies:
   sqflite: ^2.0.3+1
   path_provider: ^2.0.11
   auth_buttons: ^1.0.0
+  url_launcher: ^6.1.5
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -101,3 +102,6 @@ flutter:
    - assets/images/sen-turner.png
    - assets/images/heart.png
    - assets/images/background.png
+   - assets/images/frown.png
+   - assets/images/flat.png
+   - assets/images/smile.png
