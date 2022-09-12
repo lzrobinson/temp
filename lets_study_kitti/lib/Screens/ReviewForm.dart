@@ -433,7 +433,11 @@ class ReviewElements extends StatelessWidget{
                         if(validationSuccess == true) {
                           _formKey.currentState?.save();
 
-                          /* uploadToDatabase(_formKey.currentState!.fields['Subject Code']!.value.toString(),
+                          uploadToDatabase('MAST30027', '2017', 'Semester 1', 'Mr John', 3, 4, 5, 'Yes', 'great', 10);
+
+                          /*
+
+                          uploadToDatabase(_formKey.currentState!.fields['Subject Code']!.value.toString(),
                               _formKey.currentState!.fields['Year Taken']!.value.toString(),
                               _formKey.currentState!.fields['Semester Taken']!.value.toString(),
                               _formKey.currentState!.fields['Lecturer']!.value.toString(),
@@ -441,10 +445,8 @@ class ReviewElements extends StatelessWidget{
                               _formKey.currentState!.fields['Interest']!.value,
                               _formKey.currentState!.fields['Teaching']!.value,
                               _formKey.currentState!.fields['Recommended']!.value.toString(),
-                              _formKey.currentState!.fields['Review']!.value.toString(), 10); */
+                              _formKey.currentState!.fields['Review']!.value.toString(), 10);*/
 
-                          debugPrint(_formKey.currentState?.value.toString());
-                          debugPrint("validated");
                         }
                         else {
                           debugPrint(_formKey.currentState?.value.toString());
@@ -461,11 +463,6 @@ class ReviewElements extends StatelessWidget{
     );
    }
 
-
-  void rn(String string) {
-    debugPrint(string);
-  }
-
   // Database methods to implement
 
   void uploadToDatabase(String subjectCode, String yearTaken, String semTaken, String lecturer, 
@@ -480,7 +477,7 @@ class ReviewElements extends StatelessWidget{
       review.lecturer = lecturer;
       review.compulsory = 1;
       review.examWeightage = 0;
-      review.period = semTaken;
+      review.period = yearTaken + ' ' + semTaken;
       review.teachingQuality = teachingQuality;
       review.difficulty = difficulty;
       review.interesting = interest;

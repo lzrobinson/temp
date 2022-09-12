@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lets_study_kitti/Review.dart' show Review;
 
-const double IMG_SIZE = 50;
+const double IMG_SIZE = 40;
 
 class ProfileReview extends StatelessWidget {
 
@@ -47,6 +47,10 @@ class ProfileReview extends StatelessWidget {
         review,
       ]
     );
+  }
+
+  Review getReview() {
+    return review;
   }
 
 

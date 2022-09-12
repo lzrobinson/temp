@@ -35,15 +35,18 @@ class Review extends StatelessWidget {
             ]
         ),
         SizedBox(height: 10),
-        Text('Lecturer: '+ lecturer, style: TextStyle(fontSize: 13)),
+        Text(lecturer + ' (' + year + ' ' + sem + ')', style: TextStyle(fontSize: 13)),
         SizedBox(height: 10),
         Text('Recommend: '+ recommend, style: TextStyle(fontSize: 13)),
         SizedBox(height: 10),
-        Text('When Taken: '+ year + ' ' + sem, style: TextStyle(fontSize: 13)),
-        SizedBox(height: 10),
         reviewTxt,
+        Divider(color: Colors.black, height: 30),
       ]
       );
+  }
+
+  String getRecommended() {
+    return recommend;
   }
 
 }
