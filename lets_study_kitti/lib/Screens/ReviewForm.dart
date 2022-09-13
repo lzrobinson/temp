@@ -433,9 +433,9 @@ class ReviewElements extends StatelessWidget{
                         if(validationSuccess == true) {
                           _formKey.currentState?.save();
 
-                          uploadToDatabase('MAST30027', '2017', 'Semester 1', 'Mr John', 3, 4, 5, 'Yes', 'great', 10);
+                          //uploadToDatabase('MAST30027', '2017', 'Semester 1', 'Mr John', 3, 4, 5, 'Yes', 'great', 10, 'core');
 
-                          /*
+                          
 
                           uploadToDatabase(_formKey.currentState!.fields['Subject Code']!.value.toString(),
                               _formKey.currentState!.fields['Year Taken']!.value.toString(),
@@ -445,7 +445,7 @@ class ReviewElements extends StatelessWidget{
                               _formKey.currentState!.fields['Interest']!.value,
                               _formKey.currentState!.fields['Teaching']!.value,
                               _formKey.currentState!.fields['Recommended']!.value.toString(),
-                              _formKey.currentState!.fields['Review']!.value.toString(), 10);*/
+                              _formKey.currentState!.fields['Review']!.value.toString(), 10, 'Core');
 
                         }
                         else {
@@ -466,8 +466,8 @@ class ReviewElements extends StatelessWidget{
   // Database methods to implement
 
   void uploadToDatabase(String subjectCode, String yearTaken, String semTaken, String lecturer, 
-                      int difficulty, int interest, int teachingQuality, String recommend,
-                      String reviewText, int userID) {
+                      double difficulty, double interest, double teachingQuality, String recommend,
+                      String reviewText, int userID, String subjectType) {
 
       var review = ReviewMap();
       var reviewData = ReviewData();
@@ -475,9 +475,8 @@ class ReviewElements extends StatelessWidget{
       review.subjectCode = subjectCode;
       review.userID = userID;
       review.lecturer = lecturer;
-      review.compulsory = 1;
-      review.examWeightage = 0;
-      review.period = yearTaken + ' ' + semTaken;
+      review.subjectType = subjectType;
+      review.period = '$yearTaken $semTaken';
       review.teachingQuality = teachingQuality;
       review.difficulty = difficulty;
       review.interesting = interest;

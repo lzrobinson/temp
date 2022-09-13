@@ -3,12 +3,11 @@ class ReviewMap{
   late String subjectCode;
   late int userID;
   late String lecturer;
-  late int compulsory;
-  late int examWeightage;
+  late String subjectType;
   late String period;
-  late int teachingQuality;
-  late int difficulty;
-  late int interesting;
+  late double teachingQuality;
+  late double difficulty;
+  late double interesting;
   late String review;
   late String recommended;
 
@@ -18,7 +17,7 @@ class ReviewMap{
     mapping['subjectCode'] = subjectCode;
     mapping['userID'] = userID;
     mapping['lecturer'] = lecturer;
-    mapping['compulsory'] = compulsory;
+    mapping['subjectType'] = subjectType;
     mapping['period'] = period;
     mapping['teachingQuality'] = teachingQuality;
     mapping[' difficulty'] = difficulty;

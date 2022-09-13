@@ -14,6 +14,6 @@ class DatabaseConnection{
 
   _onCreatingDatabase(Database database, int version) async{
     await database.execute(
-      "CREATE TABLE reviews(reviewID BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, subjectCode TEXT NOT NULL, userID BIGINT NOT NULL, lecturer LONGTEXT NULL, compulsory TINYINT NOT NULL, examWeightage INT NOT NULL, period TEXT NOT NULL, teachingQuality INT NOT NULL, difficulty INT NOT NULL, interesting INT NOT NULL, review LONGTEXT NULL, recommended TEXT NOT NULL)");
+      "CREATE TABLE reviews(reviewID BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, subjectCode TEXT NOT NULL, userID BIGINT NOT NULL, lecturer LONGTEXT NULL, subjectType TEXT NOT NULL, period TEXT NOT NULL, teachingQuality REAL NOT NULL, difficulty REAL NOT NULL, interesting REAL NOT NULL, review LONGTEXT NULL, recommended TEXT NOT NULL)");
   }
 }
