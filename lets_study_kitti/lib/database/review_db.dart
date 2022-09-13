@@ -15,4 +15,9 @@ class ReviewData{
     return await respository.insertData('reviews', review.reviewMap());
   }
 
+  readReview() async{
+
+    respository.readData('reviews');
+  }
+
 }
