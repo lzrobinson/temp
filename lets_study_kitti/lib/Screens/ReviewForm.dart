@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:lets_study_kitti/database/review_mapping.dart';
 import 'package:lets_study_kitti/database/review_db.dart';
+import 'package:lets_study_kitti/database/Review.dart';
+import 'package:lets_study_kitti/database/try.dart';
 
 const OUTLINE_COLOR = Color.fromARGB(100, 0, 0, 0);
 const BOX_COLOR = Color.fromARGB(255, 254, 244, 225);
@@ -411,7 +413,7 @@ class ReviewElements extends StatelessWidget {
 
                           //uploadToDatabase('MAST30027', '2017', 'Semester 1', 'Mr John', 3, 4, 5, 'Yes', 'great', 10, 'core');
 
-                          uploadToDatabase(
+                          uploadToDatabase(1,
                               _formKey
                                   .currentState!.fields['Subject Code']!.value
                                   .toString(),
@@ -448,6 +450,7 @@ class ReviewElements extends StatelessWidget {
   // Database methods to implement
 
   void uploadToDatabase(
+      int reviewId,
       String subjectCode,
       String yearTaken,
       String semTaken,
@@ -459,7 +462,7 @@ class ReviewElements extends StatelessWidget {
       String reviewText,
       int userID,
       String subjectType) {
-    var review = ReviewMap();
+   /*  var review = ReviewMap();
     var reviewData = ReviewData();
 
     review.subjectCode = subjectCode;
@@ -473,7 +476,13 @@ class ReviewElements extends StatelessWidget {
     review.review = reviewText;
     review.recommended = recommend;
 
-    var result = reviewData.saveReview(review);
+    var result = reviewData.saveReview(review); */
+
+    var review = Review(reviewId, subjectCode, userID, lecturer, 
+        subjectType, '$yearTaken $semTaken', teachingQuality, 
+        difficulty, interest, reviewText, recommend);
+
+    var result = DBProvider.db.newReview(review);
 
     print(result);
   }
