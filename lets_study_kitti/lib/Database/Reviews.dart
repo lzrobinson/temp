@@ -12,7 +12,7 @@ class Review{
   late String review;
   late String recommended;
 
-  Review(int reviewID, String subjectCode, int userID, String lecturer, 
+  Review(String subjectCode, int userID, String lecturer, 
         String subjectType, String period, double teachingQuality, 
         double difficulty, double interesting, String review,
         String recommended) {

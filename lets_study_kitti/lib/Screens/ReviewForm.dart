@@ -1,13 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:lets_study_kitti/database/review_mapping.dart';
-import 'package:lets_study_kitti/database/review_db.dart';
-import 'package:lets_study_kitti/database/Review.dart';
-import 'package:lets_study_kitti/database/try.dart';
 
 const OUTLINE_COLOR = Color.fromARGB(100, 0, 0, 0);
 const BOX_COLOR = Color.fromARGB(255, 254, 244, 225);
@@ -413,30 +409,17 @@ class ReviewElements extends StatelessWidget {
 
                           //uploadToDatabase('MAST30027', '2017', 'Semester 1', 'Mr John', 3, 4, 5, 'Yes', 'great', 10, 'core');
 
-                          uploadToDatabase(1,
-                              _formKey
-                                  .currentState!.fields['Subject Code']!.value
-                                  .toString(),
-                              _formKey.currentState!.fields['Year Taken']!.value
-                                  .toString(),
-                              _formKey
-                                  .currentState!.fields['Semester Taken']!.value
-                                  .toString(),
-                              _formKey.currentState!.fields['Lecturer']!.value
-                                  .toString(),
-                              double.parse(_formKey
-                                  .currentState!.fields['Difficulty']!.value),
-                              double.parse(_formKey
-                                  .currentState!.fields['Interest']!.value),
-                              double.parse(_formKey
-                                  .currentState!.fields['Teaching']!.value),
-                              _formKey
-                                  .currentState!.fields['Recommended']!.value
-                                  .toString(),
-                              _formKey.currentState!.fields['Review']!.value
-                                  .toString(),
-                              10,
-                              'Core');
+                          uploadToDatabase( 
+                            subjectCode: _formKey.currentState!.fields['Subject Code']!.value.toString(),
+                            yearTaken: _formKey.currentState!.fields['Year Taken']!.value.toString(),
+                            semTaken: _formKey.currentState!.fields['Semester Taken']!.value.toString(),
+                            lecturer: _formKey.currentState!.fields['Lecturer']!.value.toString(),
+                            difficulty: double.parse(_formKey.currentState!.fields['Difficulty']!.value),
+                            interest: double.parse(_formKey.currentState!.fields['Interest']!.value),
+                            teachingQuality: double.parse(_formKey.currentState!.fields['Teaching']!.value),
+                            recommend: _formKey.currentState!.fields['Recommended']!.value.toString(),
+                            reviewText: _formKey.currentState!.fields['Review']!.value.toString(),
+                            userID: 10, subjectType: 'Core');
                         } else {
                           debugPrint(_formKey.currentState?.value.toString());
                           debugPrint('validation failed');
@@ -449,41 +432,34 @@ class ReviewElements extends StatelessWidget {
 
   // Database methods to implement
 
-  void uploadToDatabase(
-      int reviewId,
-      String subjectCode,
-      String yearTaken,
-      String semTaken,
-      String lecturer,
-      double difficulty,
-      double interest,
-      double teachingQuality,
-      String recommend,
-      String reviewText,
-      int userID,
-      String subjectType) {
-   /*  var review = ReviewMap();
-    var reviewData = ReviewData();
+  Future uploadToDatabase({
+      required String subjectCode,
+      required String yearTaken,
+      required String semTaken,
+      required String lecturer,
+      required double difficulty,
+      required double interest,
+      required double teachingQuality,
+      required String recommend,
+      required String reviewText,
+      required int userID,
+      required String subjectType}) async {
 
-    review.subjectCode = subjectCode;
-    review.userID = userID;
-    review.lecturer = lecturer;
-    review.subjectType = subjectType;
-    review.period = '$yearTaken $semTaken';
-    review.teachingQuality = teachingQuality;
-    review.difficulty = difficulty;
-    review.interesting = interest;
-    review.review = reviewText;
-    review.recommended = recommend;
+        final docUser = FirebaseFirestore.instance.collection('reviews').doc();
+        final json = {
+          'subjectCode': subjectCode,
+          'userID': userID,
+          'lecturer': lecturer,
+          'subjectType': subjectType,
+          'semesterTaken': semTaken,
+          'year': yearTaken,
+          'teachingQuality': teachingQuality,
+          'difficulty': difficulty,
+          'interesting': interest,
+          'reviewText': reviewText,
+          'recommended': recommend
+        };
 
-    var result = reviewData.saveReview(review); */
-
-    var review = Review(reviewId, subjectCode, userID, lecturer, 
-        subjectType, '$yearTaken $semTaken', teachingQuality, 
-        difficulty, interest, reviewText, recommend);
-
-    var result = DBProvider.db.newReview(review);
-
-    print(result);
+        await docUser.set(json);
   }
 }
