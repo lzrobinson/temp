@@ -1,52 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:lets_study_kitti/Score.dart' show Score;
 
-class Rating extends StatelessWidget {
-  Score difficulty = new Score(-1);
-  Score interest = new Score(-1);
-  Score teaching = new Score(-1);
+class Rating extends StatefulWidget {
+  final Score difficulty;
+  final Score interest;
+  final Score teaching;
 
-  Rating(int difficulty, int interest, int teaching) {
-    this.difficulty = new Score(difficulty);
-    this.interest = new Score(interest);
-    this.teaching = new Score(teaching);
+  const Rating(
+      {Key? key,
+      required this.difficulty,
+      required this.interest,
+      required this.teaching})
+      : super(key: key);
+
+  @override
+  State<Rating> createState() {
+    return _RatingState();
   }
+}
 
-  Widget build(BuildContext context) { 
-
+class _RatingState extends State<Rating> {
+  @override
+  Widget build(BuildContext context) {
     return Row(children: [
       Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Align(
-            alignment: Alignment.centerRight,
-            child: Container(
-              child: Text("Difficulty", style: TextStyle(fontSize: 15)),
-            )
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Container(
-              child: Text("Interest Level", style: TextStyle(fontSize: 15)),
-            )
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Container(
-              child: Text("Teaching Quality", style: TextStyle(fontSize: 15)),
-            )
-          )
-        ]),
-      SizedBox(width: 10),
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: const [
+            Align(
+                alignment: Alignment.centerRight,
+                child: Text("Difficulty", style: TextStyle(fontSize: 15))),
+            Align(
+                alignment: Alignment.centerRight,
+                child: Text("Interest Level", style: TextStyle(fontSize: 15))),
+            Align(
+                alignment: Alignment.centerRight,
+                child: Text("Teaching Quality", style: TextStyle(fontSize: 15)))
+          ]),
+      const SizedBox(width: 10),
       Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          difficulty,
-          interest,
-          teaching,
-      ])
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            widget.difficulty,
+            widget.interest,
+            widget.teaching,
+          ])
     ]);
   }
 }

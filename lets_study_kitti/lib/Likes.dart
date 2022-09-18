@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 
-const double IMG_SIZE = 50;
+const double imgSize = 50;
 
-class Likes extends StatelessWidget{
+class Likes extends StatefulWidget {
+  final int likeCount;
 
-  int like_count = 0;
+  const Likes({Key? key, required this.likeCount}) : super(key: key);
 
-  Likes(int like_count) {
-    this.like_count = like_count;
+  @override
+  State<Likes> createState() {
+    return _LikesState();
   }
+}
 
+class _LikesState extends State<Likes> {
+  @override
   Widget build(BuildContext context) {
     return Row(children: [
-      Text(like_count.toString(), style: TextStyle(fontSize: 10)),
-      SizedBox(width: 5),
-      Image.asset('images/heart.png', height: IMG_SIZE/2, width: IMG_SIZE/2)
+      Text(widget.likeCount.toString(), style: const TextStyle(fontSize: 10)),
+      const SizedBox(width: 5),
+      Image.asset('images/heart.png', height: imgSize / 2, width: imgSize / 2)
     ]);
-  }  
+  }
 }

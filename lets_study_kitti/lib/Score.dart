@@ -1,34 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:lets_study_kitti/StarDisplay.dart' show StarDisplayWidget;
+import 'package:lets_study_kitti/star_display.dart' show StarDisplayWidget;
 
-const double IMG_SIZE = 15;
+const double imgSize = 15;
 
-class Score extends StatelessWidget {
-  
-  int score = 0;
-  var stars = null;
-
-  Score(int score) {
-    this.score = score;
-    this.stars = new StarDisplayWidget(value: score,
-    filledStar: Container(
-      margin: const EdgeInsets.fromLTRB(2, 2, 2, 2),
-      child: Image.asset('assets/images/fpaw.png', height:IMG_SIZE, width:IMG_SIZE)),
-    unfilledStar: Container(
-      margin: const EdgeInsets.fromLTRB(2, 2, 2, 2),
-      child: Image.asset('assets/images/paw.png', height:IMG_SIZE, width:IMG_SIZE)
-    ));
+class Score extends StatefulWidget {
+  final int score;
+  const Score({Key? key, required this.score}) : super(key: key);
+  @override
+  State<Score> createState() {
+    return _ScoreState();
   }
+}
 
+class _ScoreState extends State<Score> {
+  @override
   Widget build(BuildContext context) {
     return Row(
-    mainAxisSize: MainAxisSize.min,
-    children:
-      [stars]
-    ,);
-  }
-
-  void setScore(int score) {
-    this.score = score;
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        StarDisplayWidget(
+            value: widget.score,
+            filledStar: Container(
+                margin: const EdgeInsets.fromLTRB(2, 2, 2, 2),
+                child: Image.asset('assets/images/fpaw.png',
+                    height: imgSize, width: imgSize)),
+            unfilledStar: Container(
+                margin: const EdgeInsets.fromLTRB(2, 2, 2, 2),
+                child: Image.asset('assets/images/paw.png',
+                    height: imgSize, width: imgSize)))
+      ],
+    );
   }
 }
