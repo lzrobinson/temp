@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lets_study_kitti/Review.dart' show Review;
+import 'package:lets_study_kitti/review.dart' show Review;
 
 const double imgSize = 40;
 
