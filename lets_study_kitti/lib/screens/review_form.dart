@@ -105,6 +105,7 @@ class ReviewElements extends StatelessWidget {
                         color: boxColor,
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     child: FormBuilderDropdown(
+                      validator: FormBuilderValidators.required(),
                       name: 'Year Taken',
                       decoration: InputDecoration(
                         labelText: "Year Taken",
@@ -151,6 +152,7 @@ class ReviewElements extends StatelessWidget {
                         color: boxColor,
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     child: FormBuilderDropdown(
+                      validator: FormBuilderValidators.required(),
                       name: 'Semester Taken',
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(
@@ -189,6 +191,7 @@ class ReviewElements extends StatelessWidget {
                           color: boxColor,
                           border: Border.all(color: outlineColor)),
                       child: FormBuilderTextField(
+                        validator: FormBuilderValidators.required(),
                         cursorColor: Colors.black,
                         name: 'Lecturer',
                         decoration: const InputDecoration(
@@ -199,6 +202,43 @@ class ReviewElements extends StatelessWidget {
                           border: InputBorder.none,
                         ),
                       )),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: hOffset),
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    width: boxWidth,
+                    height: boxHeight,
+                    decoration: const BoxDecoration(
+                        color: boxColor,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: FormBuilderDropdown(
+                      validator: FormBuilderValidators.required(),
+                      name: 'Stream',
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                            borderSide: BorderSide(),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        labelText: 'Stream',
+                        labelStyle: labelFont,
+                        suffix: IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () {
+                            _formKey.currentState?.fields['Stream']?.reset();
+                          },
+                        ),
+                        hintText: 'What Stream Was This Subject',
+                      ),
+                      items: ['Core', 'Elective', 'Breadth']
+                          .map((stream) => DropdownMenuItem(
+                                alignment: AlignmentDirectional.centerStart,
+                                value: stream,
+                                child: Text(stream),
+                              ))
+                          .toList(),
+                    ),
+                  ),
                 ),
                 Align(
                     alignment: Alignment.centerLeft,
@@ -233,6 +273,8 @@ class ReviewElements extends StatelessWidget {
                                   border: InputBorder.none,
                                 ),
                                 validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(
+                                      errorText: '0-10'),
                                   FormBuilderValidators.numeric(
                                       errorText: '0-10'),
                                   FormBuilderValidators.max(10,
@@ -275,6 +317,8 @@ class ReviewElements extends StatelessWidget {
                                     const TextInputType.numberWithOptions(
                                         decimal: true),
                                 validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(
+                                      errorText: '0-10'),
                                   FormBuilderValidators.numeric(
                                       errorText: '0-10'),
                                   FormBuilderValidators.max(10,
@@ -314,6 +358,8 @@ class ReviewElements extends StatelessWidget {
                                   border: InputBorder.none,
                                 ),
                                 validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(
+                                      errorText: '0-10'),
                                   FormBuilderValidators.numeric(
                                       errorText: '0-10'),
                                   FormBuilderValidators.max(10,
@@ -346,6 +392,8 @@ class ReviewElements extends StatelessWidget {
                                   const BorderRadius.all(Radius.circular(20)),
                               border: Border.all(color: outlineColor)),
                           child: FormBuilderDropdown(
+                            validator: FormBuilderValidators.required(
+                                errorText: "required"),
                             name: 'Recommended',
                             decoration: const InputDecoration(
                               enabledBorder: UnderlineInputBorder(
@@ -379,6 +427,7 @@ class ReviewElements extends StatelessWidget {
                           color: boxColor,
                           border: Border.all(color: outlineColor)),
                       child: FormBuilderTextField(
+                        validator: FormBuilderValidators.required(),
                         cursorColor: Colors.black,
                         name: 'Review',
                         decoration: const InputDecoration(
@@ -408,32 +457,39 @@ class ReviewElements extends StatelessWidget {
                             _formKey.currentState!.validate();
                         if (validationSuccess == true) {
                           _formKey.currentState?.save();
-
+                          debugPrint(_formKey.currentState?.value.toString());
                           //uploadToDatabase('MAST30027', '2017', 'Semester 1', 'Mr John', 3, 4, 5, 'Yes', 'great', 10, 'core');
 
                           uploadToDatabase(
-                              subjectCode: _formKey
-                                  .currentState!.fields['Subject Code']!.value
-                                  .toString(),
-                              yearTaken: _formKey
-                                  .currentState!.fields['Year Taken']!.value
-                                  .toString(),
-                              semTaken: _formKey
-                                  .currentState!.fields['Semester Taken']!.value
-                                  .toString(),
-                              lecturer: _formKey
-                                  .currentState!.fields['Lecturer']!.value
-                                  .toString(),
-                              difficulty: double.parse(_formKey
-                                  .currentState!.fields['Difficulty']!.value),
-                              interest: double.parse(_formKey
-                                  .currentState!.fields['Interest']!.value),
-                              teachingQuality:
-                                  double.parse(_formKey.currentState!.fields['Teaching']!.value),
-                              recommend: _formKey.currentState!.fields['Recommended']!.value.toString(),
-                              reviewText: _formKey.currentState!.fields['Review']!.value.toString(),
-                              userID: 10,
-                              subjectType: 'Core');
+                            subjectCode: _formKey
+                                .currentState!.fields['Subject Code']!.value
+                                .toString(),
+                            yearTaken: _formKey
+                                .currentState!.fields['Year Taken']!.value
+                                .toString(),
+                            semTaken: _formKey
+                                .currentState!.fields['Semester Taken']!.value
+                                .toString(),
+                            lecturer: _formKey
+                                .currentState!.fields['Lecturer']!.value
+                                .toString(),
+                            difficulty: double.parse(_formKey
+                                .currentState!.fields['Difficulty']!.value),
+                            interest: double.parse(_formKey
+                                .currentState!.fields['Interest']!.value),
+                            teachingQuality: double.parse(_formKey
+                                .currentState!.fields['Teaching']!.value),
+                            recommend: _formKey
+                                .currentState!.fields['Recommended']!.value
+                                .toString(),
+                            reviewText: _formKey
+                                .currentState!.fields['Review']!.value
+                                .toString(),
+                            userID: 10,
+                            subjectType: _formKey
+                                .currentState!.fields['Stream']!.value
+                                .toString(),
+                          );
                         } else {
                           debugPrint(_formKey.currentState?.value.toString());
                           debugPrint('validation failed');

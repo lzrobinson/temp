@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lets_study_kitti/Likes.dart';
-import 'package:lets_study_kitti/ProfileReview.dart' show ProfileReview;
-import 'package:lets_study_kitti/Rating.dart';
-import 'package:lets_study_kitti/Score.dart';
+import 'package:lets_study_kitti/likes.dart' show Likes;
+import 'package:lets_study_kitti/profile_review.dart' show ProfileReview;
+import 'package:lets_study_kitti/rating.dart' show Rating;
+import 'package:lets_study_kitti/score.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:lets_study_kitti/Review.dart' show Review;
+import 'package:lets_study_kitti/review.dart' show Review;
 
 const boundarySize = 100.0;
 const hOffset = 30.0;
@@ -17,7 +17,7 @@ class SubjectPage extends StatefulWidget {
   const SubjectPage({Key? key, required this.subjectCode}) : super(key: key);
 
   @override
-  _SubjectPageState createState() {
+  State<SubjectPage> createState() {
     return _SubjectPageState();
   }
 }
@@ -49,7 +49,7 @@ class _SubjectPageState extends State<SubjectPage> {
               padding: const EdgeInsets.fromLTRB(
                   boundarySize + 2 * hOffset, 25, 0, 25),
               child: Text(
-                  '${getSubjectName(widget.subjectCode)} - $widget.subjectCode',
+                  '${getSubjectName(widget.subjectCode)} - ${widget.subjectCode}',
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 30)),
             ),
@@ -217,7 +217,8 @@ class _SubjectPageState extends State<SubjectPage> {
             likes: Likes(likeCount: 0),
             recommend: 'Yes',
             year: '2020',
-            sem: 'Semester 2'),
+            sem: 'Semester 2',
+            stream: 'Core'),
         username: 'Vinay',
         major: '(Major of Computing)');
     var review2 = const ProfileReview(
@@ -231,7 +232,8 @@ class _SubjectPageState extends State<SubjectPage> {
             likes: Likes(likeCount: 10),
             recommend: 'No',
             year: '2019',
-            sem: 'Semester 1'),
+            sem: 'Semester 1',
+            stream: 'Breadth'),
         username: 'Sen',
         major: '(Major of Computing)');
 

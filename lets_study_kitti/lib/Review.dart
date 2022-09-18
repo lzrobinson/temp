@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lets_study_kitti/Rating.dart' show Rating;
-import 'package:lets_study_kitti/Likes.dart' show Likes;
+import 'package:lets_study_kitti/rating.dart' show Rating;
+import 'package:lets_study_kitti/likes.dart' show Likes;
 
 class Review extends StatefulWidget {
   final Rating ratings;
@@ -10,6 +10,7 @@ class Review extends StatefulWidget {
   final String recommend;
   final String sem;
   final String year;
+  final String stream;
 
   const Review(
       {Key? key,
@@ -19,7 +20,8 @@ class Review extends StatefulWidget {
       required this.likes,
       required this.recommend,
       required this.sem,
-      required this.year})
+      required this.year,
+      required this.stream})
       : super(key: key);
 
   @override
@@ -41,7 +43,8 @@ class _ReviewState extends State<Review> {
         widget.likes,
       ]),
       const SizedBox(height: 10),
-      Text('${widget.lecturer} (${widget.year} ${widget.sem})',
+      Text(
+          '${widget.lecturer} (${widget.year} ${widget.sem}) - ${widget.stream}',
           style: const TextStyle(fontSize: 13)),
       const SizedBox(height: 10),
       Text('Recommend: ${widget.recommend}',
