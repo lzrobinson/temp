@@ -442,13 +442,14 @@ class ReviewElements extends StatelessWidget {
         const SizedBox(height: 30),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
+              width: boxWidth,
               padding: const EdgeInsets.only(bottom: 20.0),
               child: Container(
                   decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 250, 172, 26),
                       border: Border.all(color: outlineColor)),
                   child: MaterialButton(
-                      child: const Text("Submit",
+                      child: const Text("SUBMIT",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           )),

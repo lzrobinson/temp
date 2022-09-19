@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:lets_study_kitti/screens/login_page.dart';
 import 'package:lets_study_kitti/screens/review_form_page.dart'
     show ReviewFormPage;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:lets_study_kitti/screens/review_form_page.dart';
+import 'package:lets_study_kitti/screens/sign_up_page.dart';
 import 'package:lets_study_kitti/screens/subject_page.dart' show SubjectPage;
 import 'firebase_options.dart';
 
@@ -37,13 +39,15 @@ class MyApp extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          child: reviewFormPage,
+          child: signUpPage,
         ));
   }
 }
 
 ReviewFormPage reviewFormPage = const ReviewFormPage();
 SubjectPage subjectPage = const SubjectPage(subjectCode: '30023');
+LoginPage loginPage = const LoginPage();
+SignUpPage signUpPage = const SignUpPage();
 
 /*
 
