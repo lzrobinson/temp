@@ -2,10 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:lets_study_kitti/Main.dart';
 import 'package:lets_study_kitti/routes.dart';
-import 'package:lets_study_kitti/screens/review_form.dart';
-import 'package:lets_study_kitti/screens/review_form_page.dart';
 
 const outlineColor = Color.fromARGB(100, 0, 0, 0);
 const boxColor = Color.fromARGB(255, 254, 244, 225);
@@ -31,7 +28,6 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
 
   bool isLoading = false;
-  bool error = false;
 
   @override
   Widget build(BuildContext context) {
@@ -169,8 +165,10 @@ class _LoginPageState extends State<LoginPage> {
                                                                           .currentState
                                                                           ?.value[
                                                                       'password']);
+                                                          setState(() {
+                                                            isLoading = false;
+                                                          });
                                                         } on FirebaseAuthException catch (e) {
-                                                          error = true;
                                                           if (e.code ==
                                                               'user-not-found') {
                                                             showDialog(
@@ -238,13 +236,12 @@ class _LoginPageState extends State<LoginPage> {
                                                                   );
                                                                 });
                                                           }
+                                                          setState(() {
+                                                            isLoading = false;
+                                                          });
+                                                          return;
                                                         }
-
-                                                        setState(() {
-                                                          isLoading = false;
-                                                        });
                                                       } else {
-                                                        error = true;
                                                         debugPrint(_formKey
                                                             .currentState?.value
                                                             .toString());
@@ -253,9 +250,9 @@ class _LoginPageState extends State<LoginPage> {
                                                         setState(() {
                                                           isLoading = false;
                                                         });
+                                                        return;
                                                       }
-                                                      if (!mounted || error) {
-                                                        error = false;
+                                                      if (!mounted) {
                                                         return;
                                                       }
                                                       Navigator.pushNamed(
