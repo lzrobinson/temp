@@ -227,7 +227,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                                 border: Border.all(
                                                     color: outlineColor)),
                                             child: isLoading
-                                                ? const CircularProgressIndicator()
+                                                ? const LinearProgressIndicator(
+                                                    color: Colors.orange,
+                                                    backgroundColor:
+                                                        Colors.white)
                                                 : MaterialButton(
                                                     child: const Text(
                                                         "CREATE ACCOUNT",
@@ -267,11 +270,36 @@ class _SignUpPageState extends State<SignUpPage> {
                                                           debugPrint(isSaved
                                                               .toString());
                                                         } catch (e) {
-                                                          ScaffoldMessenger.of(
-                                                                  context)
-                                                              .showSnackBar(SnackBar(
-                                                                  content: Text(
-                                                                      e.toString())));
+                                                          showDialog(
+                                                              context: context,
+                                                              barrierDismissible:
+                                                                  false, // disables popup to close if tapped outside popup (need a button to close)
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return AlertDialog(
+                                                                  title:
+                                                                      const Text(
+                                                                    "Unsuccesful Account Creation",
+                                                                  ),
+                                                                  content:
+                                                                      const Text(
+                                                                          "Email in Use"),
+                                                                  //buttons?
+                                                                  actions: <
+                                                                      Widget>[
+                                                                    MaterialButton(
+                                                                      child: const Text(
+                                                                          "Close"),
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      }, //closes popup
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              });
                                                         }
 
                                                         setState(() {

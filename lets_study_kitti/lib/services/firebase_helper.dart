@@ -17,8 +17,6 @@ class FirebaseHelper {
     final UserCredential credential = await _auth
         .createUserWithEmailAndPassword(email: email, password: password);
 
-    debugPrint(credential.user.toString());
-
     if (credential.user == null) {
       return false;
     }
@@ -44,4 +42,7 @@ class FirebaseHelper {
 
     return true;
   }
+
+  static Stream<QuerySnapshot<Map<String, dynamic>>> get buildViews =>
+      _db.collection('users').snapshots();
 }

@@ -201,7 +201,7 @@ class _SubjectPageState extends State<SubjectPage> {
   }
 
   // Get all reviews for the specified subject code
-
+  // Change json oject to list of profile review
   List<ProfileReview> getSubjectReviews(String subjectCode) {
     List<ProfileReview> reviews = [];
 
