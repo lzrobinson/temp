@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lets_study_kitti/Likes.dart';
-import 'package:lets_study_kitti/ProfileReview.dart' show ProfileReview;
+import 'package:lets_study_kitti/profile_review.dart' show ProfileReview;
 import 'package:lets_study_kitti/Rating.dart';
 import 'package:lets_study_kitti/Score.dart';
 import 'package:url_launcher/url_launcher.dart';

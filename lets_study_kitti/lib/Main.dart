@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lets_study_kitti/screens/review_form_page.dart'
-    show ReviewFormPage;
+import 'package:lets_study_kitti/screens/review_form_page.dart' show ReviewFormPage;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:firebase_core/firebase_core.dart';
