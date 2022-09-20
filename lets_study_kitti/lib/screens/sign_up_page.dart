@@ -151,6 +151,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                                     .fields['password']!.value
                                                     .toString()) {
                                               return 'Password is not matching';
+                                            } else {
+                                              return '';
                                             }
                                           }))),
                               Container(

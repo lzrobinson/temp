@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lets_study_kitti/routes.dart';
 import 'package:lets_study_kitti/screens/login_page.dart';
 import 'package:lets_study_kitti/screens/review_form_page.dart'
     show ReviewFormPage;
@@ -24,6 +25,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        initialRoute: Routes.loginPage,
+        routes: {
+          Routes.loginPage: (BuildContext context) => const LoginPage(),
+          Routes.reviewFormPage: (BuildContext context) =>
+              const ReviewFormPage(),
+          Routes.signUpPage: (BuildContext context) => const SignUpPage(),
+          Routes.subjectPage: (BuildContext context) =>
+              const SubjectPage(subjectCode: '30023'),
+        },
         title: 'Flutter FormBuilder Demo',
         debugShowCheckedModeBanner: false,
         localizationsDelegates: const [
@@ -39,7 +49,7 @@ class MyApp extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          child: signUpPage,
+          child: loginPage,
         ));
   }
 }
