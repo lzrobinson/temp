@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          child: signUpPage,
+          child: reviewFormPage,
         ));
   }
 }

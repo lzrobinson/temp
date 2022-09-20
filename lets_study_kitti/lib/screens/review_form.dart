@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -486,7 +487,6 @@ class ReviewElements extends StatelessWidget {
                             reviewText: _formKey
                                 .currentState!.fields['Review']!.value
                                 .toString(),
-                            userID: 10,
                             subjectType: _formKey
                                 .currentState!.fields['Stream']!.value
                                 .toString(),
@@ -513,12 +513,18 @@ class ReviewElements extends StatelessWidget {
       required double teachingQuality,
       required String recommend,
       required String reviewText,
-      required int userID,
       required String subjectType}) async {
     final docUser = FirebaseFirestore.instance.collection('reviews').doc();
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
+    final User user = auth.currentUser!;
+    final uid = user.uid;
+
+    debugPrint(uid);
+
     final json = {
       'subjectCode': subjectCode,
-      'userID': userID,
+      'userID': uid,
       'lecturer': lecturer,
       'subjectType': subjectType,
       'semesterTaken': semTaken,

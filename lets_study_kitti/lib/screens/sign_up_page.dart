@@ -246,23 +246,34 @@ class _SignUpPageState extends State<SignUpPage> {
                                                           true) {
                                                         _formKey.currentState
                                                             ?.save();
-                                                        debugPrint(_formKey
-                                                            .currentState?.value
-                                                            .toString());
-                                                        final isSaved =
-                                                            await FirebaseHelper.saveUser(
-                                                                context:
-                                                                    context,
-                                                                email: _formKey
-                                                                        .currentState
-                                                                        ?.value[
-                                                                    'email'],
-                                                                password: _formKey
-                                                                        .currentState
-                                                                        ?.value[
-                                                                    'password']);
-                                                        debugPrint(
-                                                            isSaved.toString());
+                                                        try {
+                                                          final isSaved = await FirebaseHelper.saveUser(
+                                                              email: _formKey
+                                                                      .currentState
+                                                                      ?.value[
+                                                                  'email'],
+                                                              password: _formKey
+                                                                      .currentState
+                                                                      ?.value[
+                                                                  'password'],
+                                                              name: _formKey
+                                                                      .currentState
+                                                                      ?.value[
+                                                                  'name'],
+                                                              major: _formKey
+                                                                      .currentState
+                                                                      ?.value[
+                                                                  'major']);
+                                                          debugPrint(isSaved
+                                                              .toString());
+                                                        } catch (e) {
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(SnackBar(
+                                                                  content: Text(
+                                                                      e.toString())));
+                                                        }
+
                                                         setState(() {
                                                           isLoading = false;
                                                         });
