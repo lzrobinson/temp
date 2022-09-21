@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:review_threads/heading_bar.dart';
+import 'package:review_threads/profile_bar.dart';
 
 class Review extends StatelessWidget {
   const Review({super.key});
@@ -26,6 +27,7 @@ class Review extends StatelessWidget {
             height: 15,
           ),
           HeadingBar('Review'),
+          ProfileBar('Sen', 'Major of Data Science'),
         ],
       ),
     );
