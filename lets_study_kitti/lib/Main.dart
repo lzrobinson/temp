@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lets_study_kitti/home_page/home_page.dart';
 import 'package:lets_study_kitti/routes.dart';
 import 'package:lets_study_kitti/screens/login_page.dart';
 import 'package:lets_study_kitti/screens/review_form_page.dart'
@@ -25,32 +26,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        initialRoute: Routes.loginPage,
-        routes: {
-          Routes.loginPage: (BuildContext context) => const LoginPage(),
-          Routes.reviewFormPage: (BuildContext context) =>
-              const ReviewFormPage(),
-          Routes.signUpPage: (BuildContext context) => const SignUpPage(),
-          Routes.subjectPage: (BuildContext context) =>
-              const SubjectPage(subjectCode: '30023'),
-        },
-        title: 'Flutter FormBuilder Demo',
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: const [
-          FormBuilderLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: FormBuilderLocalizations.delegate.supportedLocales,
-        home: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/background.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: loginPage,
-        ));
+      initialRoute: Routes.homePage,
+      routes: {
+        Routes.loginPage: (BuildContext context) => const LoginPage(),
+        Routes.reviewFormPage: (BuildContext context) => const ReviewFormPage(),
+        Routes.signUpPage: (BuildContext context) => const SignUpPage(),
+        Routes.subjectPage: (BuildContext context) =>
+            const SubjectPage(subjectCode: '30023'),
+        Routes.homePage: (BuildContext context) => const HomePage(),
+      },
+      title: 'Flutter FormBuilder Demo',
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        FormBuilderLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: FormBuilderLocalizations.delegate.supportedLocales,
+    );
   }
 }
 

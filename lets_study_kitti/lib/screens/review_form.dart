@@ -588,7 +588,7 @@ class _ReviewFormState extends State<ReviewForm> {
                                                 return;
                                               }
                                               Navigator.pushNamed(
-                                                  context, Routes.subjectPage);
+                                                  context, Routes.homePage);
                                             })))
                           ])
                     ],
