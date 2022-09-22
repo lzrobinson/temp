@@ -1,7 +1,14 @@
+// ignore_for_file: avoid_print
+
+import 'dart:js';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:dropdownfield/dropdownfield.dart';
+
 
 const outlineColor = Color.fromARGB(100, 0, 0, 0);
 const boxColor = Color.fromARGB(255, 254, 244, 225);
@@ -50,6 +57,8 @@ class ReviewElements extends StatelessWidget {
 
   ReviewElements({Key? key}) : super(key: key);
 
+String val = '';
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -69,31 +78,20 @@ class ReviewElements extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: hOffset, vertical: 20),
                   alignment: Alignment.centerLeft,
-                  child: Container(
-                      width: boxWidth,
-                      height: boxHeight,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                          color: boxColor,
-                          border: Border.all(color: outlineColor)),
-                      child: FormBuilderTextField(
-                          cursorColor: Colors.black,
-                          name: 'Subject Code',
-                          decoration: const InputDecoration(
-                            hintText: "Subject Code",
-                            hintStyle: labelFont,
-                            contentPadding:
-                                EdgeInsets.only(top: 5.0, bottom: 5.0),
-                            border: InputBorder.none,
-                          ),
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(),
-                            FormBuilderValidators.minLength(9,
-                                errorText: 'Should be 9 characters long'),
-                            FormBuilderValidators.maxLength(9,
-                                errorText: 'Should be 9 characters long'),
-                          ]))),
-                ),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                            DropDownField(
+                              onValueChanged: (dynamic value) {
+                                val = value;
+                              },
+                              required:true,
+                              hintText: 'SubjectCode',
+                              labelText: 'SubjectCode',
+                              items: readData(val),
+                            )
+                          ],
+                          )),                      
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: hOffset),
                   alignment: Alignment.centerLeft,
@@ -105,6 +103,7 @@ class ReviewElements extends StatelessWidget {
                         color: boxColor,
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     child: FormBuilderDropdown(
+                      validator: FormBuilderValidators.required(),
                       name: 'Year Taken',
                       decoration: InputDecoration(
                         labelText: "Year Taken",
@@ -151,6 +150,7 @@ class ReviewElements extends StatelessWidget {
                         color: boxColor,
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     child: FormBuilderDropdown(
+                      validator: FormBuilderValidators.required(),
                       name: 'Semester Taken',
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(
@@ -189,6 +189,7 @@ class ReviewElements extends StatelessWidget {
                           color: boxColor,
                           border: Border.all(color: outlineColor)),
                       child: FormBuilderTextField(
+                        validator: FormBuilderValidators.required(),
                         cursorColor: Colors.black,
                         name: 'Lecturer',
                         decoration: const InputDecoration(
@@ -199,6 +200,43 @@ class ReviewElements extends StatelessWidget {
                           border: InputBorder.none,
                         ),
                       )),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: hOffset),
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    width: boxWidth,
+                    height: boxHeight,
+                    decoration: const BoxDecoration(
+                        color: boxColor,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: FormBuilderDropdown(
+                      validator: FormBuilderValidators.required(),
+                      name: 'Stream',
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                            borderSide: BorderSide(),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        labelText: 'Stream',
+                        labelStyle: labelFont,
+                        suffix: IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () {
+                            _formKey.currentState?.fields['Stream']?.reset();
+                          },
+                        ),
+                        hintText: 'What Stream Was This Subject',
+                      ),
+                      items: ['Core', 'Elective', 'Breadth']
+                          .map((stream) => DropdownMenuItem(
+                                alignment: AlignmentDirectional.centerStart,
+                                value: stream,
+                                child: Text(stream),
+                              ))
+                          .toList(),
+                    ),
+                  ),
                 ),
                 Align(
                     alignment: Alignment.centerLeft,
@@ -233,6 +271,8 @@ class ReviewElements extends StatelessWidget {
                                   border: InputBorder.none,
                                 ),
                                 validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(
+                                      errorText: '0-10'),
                                   FormBuilderValidators.numeric(
                                       errorText: '0-10'),
                                   FormBuilderValidators.max(10,
@@ -275,6 +315,8 @@ class ReviewElements extends StatelessWidget {
                                     const TextInputType.numberWithOptions(
                                         decimal: true),
                                 validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(
+                                      errorText: '0-10'),
                                   FormBuilderValidators.numeric(
                                       errorText: '0-10'),
                                   FormBuilderValidators.max(10,
@@ -314,6 +356,8 @@ class ReviewElements extends StatelessWidget {
                                   border: InputBorder.none,
                                 ),
                                 validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(
+                                      errorText: '0-10'),
                                   FormBuilderValidators.numeric(
                                       errorText: '0-10'),
                                   FormBuilderValidators.max(10,
@@ -346,6 +390,8 @@ class ReviewElements extends StatelessWidget {
                                   const BorderRadius.all(Radius.circular(20)),
                               border: Border.all(color: outlineColor)),
                           child: FormBuilderDropdown(
+                            validator: FormBuilderValidators.required(
+                                errorText: "required"),
                             name: 'Recommended',
                             decoration: const InputDecoration(
                               enabledBorder: UnderlineInputBorder(
@@ -379,6 +425,7 @@ class ReviewElements extends StatelessWidget {
                           color: boxColor,
                           border: Border.all(color: outlineColor)),
                       child: FormBuilderTextField(
+                        validator: FormBuilderValidators.required(),
                         cursorColor: Colors.black,
                         name: 'Review',
                         decoration: const InputDecoration(
@@ -393,13 +440,14 @@ class ReviewElements extends StatelessWidget {
         const SizedBox(height: 30),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
+              width: boxWidth,
               padding: const EdgeInsets.only(bottom: 20.0),
               child: Container(
                   decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 250, 172, 26),
                       border: Border.all(color: outlineColor)),
                   child: MaterialButton(
-                      child: const Text("Submit",
+                      child: const Text("SUBMIT",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           )),
@@ -408,32 +456,38 @@ class ReviewElements extends StatelessWidget {
                             _formKey.currentState!.validate();
                         if (validationSuccess == true) {
                           _formKey.currentState?.save();
-
+                          debugPrint(_formKey.currentState?.value.toString());
                           //uploadToDatabase('MAST30027', '2017', 'Semester 1', 'Mr John', 3, 4, 5, 'Yes', 'great', 10, 'core');
 
                           uploadToDatabase(
-                              subjectCode: _formKey
-                                  .currentState!.fields['Subject Code']!.value
-                                  .toString(),
-                              yearTaken: _formKey
-                                  .currentState!.fields['Year Taken']!.value
-                                  .toString(),
-                              semTaken: _formKey
-                                  .currentState!.fields['Semester Taken']!.value
-                                  .toString(),
-                              lecturer: _formKey
-                                  .currentState!.fields['Lecturer']!.value
-                                  .toString(),
-                              difficulty: double.parse(_formKey
-                                  .currentState!.fields['Difficulty']!.value),
-                              interest: double.parse(_formKey
-                                  .currentState!.fields['Interest']!.value),
-                              teachingQuality:
-                                  double.parse(_formKey.currentState!.fields['Teaching']!.value),
-                              recommend: _formKey.currentState!.fields['Recommended']!.value.toString(),
-                              reviewText: _formKey.currentState!.fields['Review']!.value.toString(),
-                              userID: 10,
-                              subjectType: 'Core');
+                            subjectCode: _formKey
+                                .currentState!.fields['Subject Code']!.value
+                                .toString(),
+                            yearTaken: _formKey
+                                .currentState!.fields['Year Taken']!.value
+                                .toString(),
+                            semTaken: _formKey
+                                .currentState!.fields['Semester Taken']!.value
+                                .toString(),
+                            lecturer: _formKey
+                                .currentState!.fields['Lecturer']!.value
+                                .toString(),
+                            difficulty: double.parse(_formKey
+                                .currentState!.fields['Difficulty']!.value),
+                            interest: double.parse(_formKey
+                                .currentState!.fields['Interest']!.value),
+                            teachingQuality: double.parse(_formKey
+                                .currentState!.fields['Teaching']!.value),
+                            recommend: _formKey
+                                .currentState!.fields['Recommended']!.value
+                                .toString(),
+                            reviewText: _formKey
+                                .currentState!.fields['Review']!.value
+                                .toString(),
+                            subjectType: _formKey
+                                .currentState!.fields['Stream']!.value
+                                .toString(),
+                          );
                         } else {
                           debugPrint(_formKey.currentState?.value.toString());
                           debugPrint('validation failed');
@@ -456,12 +510,18 @@ class ReviewElements extends StatelessWidget {
       required double teachingQuality,
       required String recommend,
       required String reviewText,
-      required int userID,
       required String subjectType}) async {
     final docUser = FirebaseFirestore.instance.collection('reviews').doc();
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
+    final User user = auth.currentUser!;
+    final uid = user.uid;
+
+    debugPrint(uid);
+
     final json = {
       'subjectCode': subjectCode,
-      'userID': userID,
+      'userID': uid,
       'lecturer': lecturer,
       'subjectType': subjectType,
       'semesterTaken': semTaken,
@@ -475,4 +535,23 @@ class ReviewElements extends StatelessWidget {
 
     await docUser.set(json);
   }
+  
+  List readData(String val){
+
+    List<String> subjects = <String>[];
+    FirebaseFirestore.instance
+    .collection('subjects')
+    .get()
+    .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          if (doc['subjectCode'].toString().toLowerCase().startsWith(val.toLowerCase())){
+            String sub = doc['subjectCode'] + ' ' + doc["subjectName"];
+            subjects.add(sub);
+          }
+        });
+        return subjects;
+    });
+    return [];
+  }
+
 }
