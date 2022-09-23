@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lets_study_kitti/home_page/my_navigation_bar.dart';
 import 'package:lets_study_kitti/likes.dart' show Likes;
 import 'package:lets_study_kitti/profile_review.dart' show ProfileReview;
 import 'package:lets_study_kitti/rating.dart' show Rating;
@@ -27,21 +28,7 @@ class _SubjectPageState extends State<SubjectPage> {
   Widget build(BuildContext context) {
     List<ProfileReview> reviews = getSubjectReviews(widget.subjectCode);
     return Scaffold(
-        appBar: AppBar(
-          leading: const IconButton(
-            icon: Icon(Icons.menu),
-            tooltip: 'Navigation menu',
-            onPressed: null,
-          ),
-          title: const Text('Example title'),
-          actions: const [
-            IconButton(
-              icon: Icon(Icons.search),
-              tooltip: 'Search',
-              onPressed: null,
-            ),
-          ],
-        ),
+        appBar: const MyNavigationBar(),
         body: ListView(shrinkWrap: true, children: [
           Align(
             alignment: Alignment.centerLeft,

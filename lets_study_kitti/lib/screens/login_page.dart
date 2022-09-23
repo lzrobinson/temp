@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:lets_study_kitti/home_page/my_navigation_bar.dart';
 import 'package:lets_study_kitti/routes.dart';
 
 const outlineColor = Color.fromARGB(100, 0, 0, 0);
@@ -32,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: const MyNavigationBar(),
         body: ListView(shrinkWrap: true, children: [
           Align(
             alignment: Alignment.center,
@@ -257,24 +258,32 @@ class _LoginPageState extends State<LoginPage> {
                                                       }
                                                       Navigator.pushNamed(
                                                           context,
-                                                          Routes
-                                                              .reviewFormPage);
+                                                          Routes.homePage);
                                                     })))
                                   ]),
                               Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: hOffset),
-                                  child: const Text(
-                                    "don't have an account? Sign Up",
-                                    style: linkFont,
-                                  )),
+                                  child: MaterialButton(
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "don't have an account? Sign Up",
+                                            style: linkFont,
+                                          )),
+                                      onPressed: () => Navigator.pushNamed(
+                                          context, Routes.signUpPage))),
                               Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: hOffset),
-                                  child: const Text(
-                                    "forgot your password?",
-                                    style: linkFont,
-                                  )),
+                                  child: MaterialButton(
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "forgot your password",
+                                            style: linkFont,
+                                          )),
+                                      onPressed: () {})),
                               const SizedBox(height: 2 * vOffset)
                             ]))
                       ]))))
