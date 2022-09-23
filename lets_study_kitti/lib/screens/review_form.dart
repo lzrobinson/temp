@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:dropdownfield/dropdownfield.dart';
 
 
 const outlineColor = Color.fromARGB(100, 0, 0, 0);
@@ -57,9 +56,9 @@ class ReviewElements extends StatelessWidget {
 
   ReviewElements({Key? key}) : super(key: key);
 
-String val = '';
 
-  @override
+
+    @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -78,20 +77,31 @@ String val = '';
                   padding: const EdgeInsets.symmetric(
                       horizontal: hOffset, vertical: 20),
                   alignment: Alignment.centerLeft,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                            DropDownField(
-                              onValueChanged: (dynamic value) {
-                                val = value;
-                              },
-                              required:true,
-                              hintText: 'SubjectCode',
-                              labelText: 'SubjectCode',
-                              items: readData(val),
-                            )
-                          ],
-                          )),                      
+                  child: Container(
+                      width: boxWidth,
+                      height: boxHeight,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                          color: boxColor,
+                          border: Border.all(color: outlineColor)),
+                      child: FormBuilderTextField(
+                          cursorColor: Colors.black,
+                          name: 'Subject Code',
+                          decoration: const InputDecoration(
+                            hintText: "Subject Code",
+                            hintStyle: labelFont,
+                            contentPadding:
+                                EdgeInsets.only(top: 5.0, bottom: 5.0),
+                            border: InputBorder.none,
+                          ),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(),
+                            FormBuilderValidators.minLength(9,
+                                errorText: 'Should be 9 characters long'),
+                            FormBuilderValidators.maxLength(9,
+                                errorText: 'Should be 9 characters long'),
+                          ]))),
+                ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: hOffset),
                   alignment: Alignment.centerLeft,
@@ -497,7 +507,6 @@ String val = '';
       ],
     );
   }
-
   // Database methods to implement
 
   Future uploadToDatabase(
@@ -536,6 +545,7 @@ String val = '';
     await docUser.set(json);
   }
   
+  // List of possible subject code and subject name starting with entered values
   List readData(String val){
 
     List<String> subjects = <String>[];
