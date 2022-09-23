@@ -26,7 +26,14 @@ class ReviewForm extends StatefulWidget {
 class _ReviewFormState extends State<ReviewForm> {
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
 
+  static const Map<String, String> _subjectCodes = <String, String>{
+    'IT Project': 'COMP30023',
+    'Foundations of Computing': 'COMP10001',
+    'Algorithms and Data Structures': 'COMP20008',
+  };
+
   bool isLoading = false;
+  String forSubject = '';
 
   @override
   Widget build(BuildContext context) {
@@ -60,39 +67,80 @@ class _ReviewFormState extends State<ReviewForm> {
                                       child: const Text('Subject Information',
                                           style: sectionFont))),
                               Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: hOffset, vertical: 20),
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                    width: boxWidth,
-                                    height: boxHeight,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                    decoration: BoxDecoration(
-                                        color: boxColor,
-                                        border:
-                                            Border.all(color: outlineColor)),
-                                    child: FormBuilderTextField(
-                                        cursorColor: Colors.black,
-                                        name: 'Subject Code',
-                                        decoration: const InputDecoration(
-                                          hintText: "Subject Code",
-                                          hintStyle: labelFont,
-                                          contentPadding: EdgeInsets.only(
-                                              top: 5.0, bottom: 5.0),
-                                          border: InputBorder.none,
-                                        ),
-                                        validator:
-                                            FormBuilderValidators.compose([
-                                          FormBuilderValidators.required(),
-                                          FormBuilderValidators.minLength(9,
-                                              errorText:
-                                                  'Should be 9 characters long'),
-                                          FormBuilderValidators.maxLength(9,
-                                              errorText:
-                                                  'Should be 9 characters long'),
-                                        ]))),
-                              ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: hOffset, vertical: 20),
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                      color: boxColor,
+                                      height: boxHeight,
+                                      width: boxWidth,
+                                      child: Autocomplete<String>(
+                                          optionsBuilder: (TextEditingValue
+                                              textEditingValue) {
+                                        if (textEditingValue.text == '') {
+                                          return const Iterable<String>.empty();
+                                        }
+                                        return _subjectCodes.keys
+                                            .where((String option) {
+                                          return option.toUpperCase().contains(
+                                              textEditingValue.text
+                                                  .toUpperCase());
+                                        });
+                                      }, optionsViewBuilder:
+                                              (context, onSelected, options) {
+                                        return Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Material(
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.vertical(
+                                                      bottom:
+                                                          Radius.circular(4.0)),
+                                            ),
+                                            child: SizedBox(
+                                              height: 52.0 * options.length,
+                                              width: boxWidth,
+                                              child: ListView.builder(
+                                                padding: EdgeInsets.zero,
+                                                itemCount: options.length,
+                                                shrinkWrap: false,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  final String option =
+                                                      options.elementAt(index);
+                                                  return InkWell(
+                                                    onTap: () =>
+                                                        onSelected(option),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16.0),
+                                                      child: Text(option),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }, fieldViewBuilder: (context,
+                                              textEditingController,
+                                              focusNode,
+                                              onFieldSubmitted) {
+                                        return TextField(
+                                            controller: textEditingController,
+                                            focusNode: focusNode,
+                                            cursorColor: Colors.black,
+                                            decoration: const InputDecoration(
+                                                fillColor: boxColor,
+                                                border: OutlineInputBorder(),
+                                                hintText: 'Subject',
+                                                focusedBorder:
+                                                    OutlineInputBorder()));
+                                      }, onSelected: (String value) {
+                                        forSubject = value;
+                                      }))),
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: hOffset),
@@ -512,19 +560,45 @@ class _ReviewFormState extends State<ReviewForm> {
                                               final validationSuccess = _formKey
                                                   .currentState!
                                                   .validate();
-                                              if (validationSuccess == true) {
+                                              if (forSubject == '') {
+                                                showDialog(
+                                                    context: context,
+                                                    barrierDismissible:
+                                                        false, // disables popup to close if tapped outside popup (need a button to close)
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: const Text(
+                                                          "Form Submission Unsuccesful",
+                                                        ),
+                                                        content: const Text(
+                                                            "Must Specify Subject"),
+                                                        actions: <Widget>[
+                                                          MaterialButton(
+                                                            child: const Text(
+                                                                "Close"),
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            }, //closes popup
+                                                          ),
+                                                        ],
+                                                      );
+                                                    });
+                                                isLoading = false;
+                                                return;
+                                              } else if (validationSuccess ==
+                                                  true) {
                                                 _formKey.currentState?.save();
                                                 debugPrint(_formKey
                                                     .currentState?.value
                                                     .toString());
                                                 //uploadToDatabase('MAST30027', '2017', 'Semester 1', 'Mr John', 3, 4, 5, 'Yes', 'great', 10, 'core');
-
+                                                debugPrint(forSubject);
                                                 await uploadToDatabase(
-                                                  subjectCode: _formKey
-                                                      .currentState!
-                                                      .fields['Subject Code']!
-                                                      .value
-                                                      .toString(),
+                                                  subjectCode: _subjectCodes[
+                                                      forSubject]!,
                                                   yearTaken: _formKey
                                                       .currentState!
                                                       .fields['Year Taken']!

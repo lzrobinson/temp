@@ -35,7 +35,9 @@ class MyNavigationBar extends StatelessWidget with PreferredSizeWidget {
                     return const Iterable<String>.empty();
                   }
                   return _subjectCodes.keys.where((String option) {
-                    return option.contains(textEditingValue.text.toUpperCase());
+                    return option
+                        .toUpperCase()
+                        .contains(textEditingValue.text.toUpperCase());
                   });
                 },
                 fieldViewBuilder: (context, textEditingController, focusNode,
