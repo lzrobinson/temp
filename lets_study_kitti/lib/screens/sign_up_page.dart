@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lets_study_kitti/home_page/my_navigation_bar.dart';
+import 'package:lets_study_kitti/routes.dart';
 import 'package:lets_study_kitti/services/firebase_helper.dart';
 
 const outlineColor = Color.fromARGB(100, 0, 0, 0);
@@ -116,7 +117,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                         validator:
                                             FormBuilderValidators.compose([
                                           FormBuilderValidators.required(),
-                                          FormBuilderValidators.minLength(6),
                                         ]))),
                               ),
                               Container(
@@ -153,7 +153,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                     .toString()) {
                                               return 'Password is not matching';
                                             } else {
-                                              return '';
+                                              return null;
                                             }
                                           }))),
                               Container(
@@ -303,6 +303,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                                                   ],
                                                                 );
                                                               });
+                                                          setState(() {
+                                                            isLoading = false;
+                                                          });
+                                                          return;
                                                         }
 
                                                         setState(() {
@@ -317,7 +321,14 @@ class _SignUpPageState extends State<SignUpPage> {
                                                         setState(() {
                                                           isLoading = false;
                                                         });
+                                                        return;
                                                       }
+                                                      if (!mounted) {
+                                                        return;
+                                                      }
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          Routes.loginPage);
                                                     })))
                                   ]),
                             ]))
