@@ -27,6 +27,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: Routes.homePage,
+      theme: ThemeData(
+        primaryColor: Colors.black,
+      ),
       routes: {
         Routes.loginPage: (BuildContext context) => const LoginPage(),
         Routes.reviewFormPage: (BuildContext context) => const ReviewFormPage(),
