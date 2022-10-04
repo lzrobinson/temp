@@ -626,9 +626,30 @@ class _ReviewFormState extends State<ReviewForm> {
       'difficulty': difficulty,
       'interesting': interest,
       'reviewText': reviewText,
-      'recommended': recommend
+      'recommended': recommend,
     };
 
     await docUser.set(json);
+  }
+
+  // List of possible subject code and subject name starting with entered values
+  List readData(String val) {
+    List<String> subjects = <String>[];
+    FirebaseFirestore.instance
+        .collection('subjects')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        if (doc['subjectCode']
+            .toString()
+            .toLowerCase()
+            .startsWith(val.toLowerCase())) {
+          String sub = doc['subjectCode'] + ' ' + doc["subjectName"];
+          subjects.add(sub);
+        }
+      });
+      return subjects;
+    });
+    return [];
   }
 }

@@ -6,6 +6,7 @@ import 'package:lets_study_kitti/rating.dart' show Rating;
 import 'package:lets_study_kitti/score.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:lets_study_kitti/review.dart' show Review;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 const boundarySize = 100.0;
 const hOffset = 30.0;
@@ -183,49 +184,49 @@ class _SubjectPageState extends State<SubjectPage> {
   // Given subject code get subject name
 
   String getSubjectName(String subjectCode) {
-    String subjectName = 'IT Project';
-    return subjectName;
+    FirebaseFirestore.instance
+        .collection('subjects')
+        .where('subjectCode', isEqualTo: subjectCode)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        return doc['subjectName'];
+      });
+    });
+
+    return '';
   }
 
   // Get all reviews for the specified subject code
-  // Change json oject to list of profile review
+
   List<ProfileReview> getSubjectReviews(String subjectCode) {
     List<ProfileReview> reviews = [];
 
-    // Below code is just for front end testing
-    var review1 = const ProfileReview(
-        review: Review(
-            ratings: Rating(
-                difficulty: Score(score: 2),
-                interest: Score(score: 3),
-                teaching: Score(score: 4)),
-            reviewTxt: 'Boring and hard',
-            lecturer: 'Paul Jones',
-            likes: Likes(likeCount: 0),
-            recommend: 'Yes',
-            year: '2020',
-            sem: 'Semester 2',
-            stream: 'Core'),
-        username: 'Vinay',
-        major: '(Major of Computing)');
-    var review2 = const ProfileReview(
-        review: Review(
-            ratings: Rating(
-                difficulty: Score(score: 10),
-                interest: Score(score: 10),
-                teaching: Score(score: 10)),
-            reviewTxt: 'Incredible',
-            lecturer: 'Mr man',
-            likes: Likes(likeCount: 10),
-            recommend: 'No',
-            year: '2019',
-            sem: 'Semester 1',
-            stream: 'Breadth'),
-        username: 'Sen',
-        major: '(Major of Computing)');
+    FirebaseFirestore.instance
+        .collection('reviews')
+        .where('subjectCode', isEqualTo: subjectCode)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        var review = ProfileReview(
+            review: Review(
+                ratings: Rating(
+                    difficulty: Score(score: doc['difficulty']),
+                    interest: Score(score: doc['interesting']),
+                    teaching: Score(score: doc['teachingQuality'])),
+                reviewTxt: doc['reviewText'],
+                lecturer: doc['lecturer'],
+                likes: Likes(likeCount: 0),
+                recommend: doc['recommended'],
+                year: doc['year'],
+                sem: doc['semesterTaken'],
+                stream: doc['subjectType']),
+            username: getUsername(doc['userID']),
+            major: getMajors(doc['userID']));
 
-    reviews.add(review1);
-    reviews.add(review2);
+        reviews.add(review);
+      });
+    });
 
     return reviews;
   }
@@ -233,7 +234,44 @@ class _SubjectPageState extends State<SubjectPage> {
   // Get the handbook link given the subject code
 
   String getHandbookLink(String subjectCode) {
-    String link = 'https://handbook.unimelb.edu.au/2020/subjects/comp30022';
-    return link;
+    FirebaseFirestore.instance
+        .collection('subjects')
+        .where('subjectCode', isEqualTo: subjectCode)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        return doc['link'];
+      });
+    });
+
+    return '';
+  }
+
+  String getUsername(String userID) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: userID)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        return doc['name'];
+      });
+    });
+
+    return '';
+  }
+
+  String getMajors(String userID) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: userID)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        return doc['major'];
+      });
+    });
+
+    return '';
   }
 }
