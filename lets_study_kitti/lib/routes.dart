@@ -4,4 +4,5 @@ class Routes {
   static const String reviewFormPage = '/reviewForm';
   static const String subjectPage = '/subject';
   static const String signUpPage = '/signUp';
+  static const String verifyEmailPage = '/verifyEmail';
 }
