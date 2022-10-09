@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
 }
 
 ReviewFormPage reviewFormPage = const ReviewFormPage();
-SubjectPage subjectPage = const SubjectPage(subjectCode: '30023');
+SubjectPage subjectPage = const SubjectPage(subjectCode: 'COMP30022');
 
 /*
 

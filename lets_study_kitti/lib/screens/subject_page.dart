@@ -26,9 +26,119 @@ class SubjectPage extends StatefulWidget {
 }
 
 class _SubjectPageState extends State<SubjectPage> {
+
+  final _firestore = FirebaseFirestore.instance;
+  var reviews = [];
+  var reviewLen = 0;
+  var recommendNum = 0;
+  var handbookLink = '';
+  var subjectName = '';
+  var name = '';
+  var majors = '';
+
+  void initState(){
+    super.initState();
+    getSubjectName(widget.subjectCode);
+    getRecommended(widget.subjectCode);
+    getHandbookLink(widget.subjectCode);
+    //getSubjectReviews(widget.subjectCode);
+  }
+
+  // Given subject code get subject name
+  void getSubjectName(String subjectCode) {
+    _firestore.collection('subjects')
+    .where('subjectCode', isEqualTo: subjectCode)
+    .get()
+    .then((QuerySnapshot querySnapshot) {
+      setState(() {
+        querySnapshot.docs.forEach((doc) {
+          subjectName = doc['subjectName']; 
+        });
+      });
+    });
+  }
+
+// Get the handbook link given the subject code
+  void getHandbookLink(String subjectCode) {
+    _firestore.collection('subjects')
+    .where('subjectCode', isEqualTo: subjectCode)
+    .get()
+    .then((QuerySnapshot querySnapshot) {
+      setState(() {
+        querySnapshot.docs.forEach((doc) {
+          handbookLink = doc['link'];
+        });    
+      });
+    });
+  }
+
+  void getRecommended(String subjectCode) {
+    _firestore.collection('reviews')
+    .where('subjectCode', isEqualTo: subjectCode)
+    .get()
+    .then((QuerySnapshot querySnapshot) {
+      setState(() {
+        querySnapshot.docs.forEach((doc) {
+          if (doc['recommended'] == 'Yes'){
+            recommendNum += 1;
+          }
+          reviewLen += 1;
+        }); 
+      });
+    });
+  }
+
+  // Get the majors and  given the userID
+  void getUserDetails(String userID) {
+
+    _firestore.collection('users')
+    .where('uid', isEqualTo: userID)
+    .get()
+    .then((QuerySnapshot querySnapshot) {
+      setState(() {
+        querySnapshot.docs.forEach((doc) {
+          name = doc['name'];
+          majors = doc['major'];
+        });
+      });     
+    });
+  }
+
+
+
+  // Get all reviews for the specified subject code
+  void getSubjectReviews(String subjectCode) {
+
+    _firestore.collection('reviews')
+    .where('subjectCode', isEqualTo: subjectCode)
+    .get()
+    .then((QuerySnapshot querySnapshot) {
+      setState(() {
+        querySnapshot.docs.forEach((doc) {
+          //getUserDetails(doc['uid']);
+          reviews.add(
+            ProfileReview(
+              review: Review(
+                ratings: Rating(
+                  difficulty: Score(score: doc['difficulty']),
+                  interest: Score(score: doc['interesting']),
+                  teaching: Score(score: doc['teachingQuality'])),
+                  reviewTxt: doc['reviewText'],
+                  lecturer: doc['lecturer'],
+                  likes: Likes(likeCount: 0),
+                  recommend: doc['recommended'],
+                  year: doc['year'],
+                  sem: doc['semesterTaken']),
+                  username: name,
+                  major: majors));
+        });
+      });
+    });
+  }
+  
+
   @override
   Widget build(BuildContext context) {
-    List<ProfileReview> reviews = getSubjectReviews(widget.subjectCode);
     return Scaffold(
         appBar: AppBar(
           leading: const IconButton(
@@ -52,7 +162,7 @@ class _SubjectPageState extends State<SubjectPage> {
               padding: const EdgeInsets.fromLTRB(
                   boundarySize + 2 * hOffset, 25, 0, 25),
               child: Text(
-                  '${getSubjectName(widget.subjectCode)} - $widget.subjectCode',
+                  '${subjectName} - ${widget.subjectCode}',
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 30)),
             ),
@@ -63,10 +173,10 @@ class _SubjectPageState extends State<SubjectPage> {
               padding: const EdgeInsets.fromLTRB(
                   boundarySize + 2 * hOffset, 0, 0, 0),
               child: Row(children: [
-                Image.asset(getRecommendationImage(reviews),
+                Image.asset(getRecommendationImage(recommendNum/reviewLen),
                     height: imgSize / 2, width: imgSize / 2),
                 const SizedBox(width: 10),
-                Text("${(recommendedRate(reviews) * 100).toStringAsFixed(1)}%",
+                Text("${(recommendNum/reviewLen * 100).toStringAsFixed(1)}%",
                     style: const TextStyle(fontSize: 30)),
                 const Text('  Recommended', style: TextStyle(fontSize: 12))
               ]),
@@ -120,7 +230,7 @@ class _SubjectPageState extends State<SubjectPage> {
                             child: InkWell(
                                 child: const Text('Handbook Link'),
                                 onTap: () => launchUrl(Uri.parse(
-                                    getHandbookLink(widget.subjectCode)))),
+                                    handbookLink))),
                           )
                         ],
                       )))),
@@ -161,13 +271,21 @@ class _SubjectPageState extends State<SubjectPage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: vOffset),
-                        ListView(shrinkWrap: true, children: reviews)
+                        Container(
+                            
+                            padding:
+                                const EdgeInsets.fromLTRB(0, vOffset, 0, 0),
+                            alignment: Alignment.centerLeft,
+                            child: InkWell(
+                                child: const Text('Handbook Link'),
+                                onTap: () => launchUrl(Uri.parse(
+                                    handbookLink))),       
+                            ),
                       ]))))
         ]));
   }
 
-  double recommendedRate(List<ProfileReview> reviews) {
+  double recommendedRate(List<dynamic> reviews) {
     int yesCount = 0;
     int noCount = 0;
 
@@ -182,9 +300,7 @@ class _SubjectPageState extends State<SubjectPage> {
     return yesCount / (yesCount + noCount);
   }
 
-  String getRecommendationImage(List<ProfileReview> reviews) {
-    double rate = recommendedRate(reviews);
-
+  String getRecommendationImage(double rate) {
     if (rate < 0.33) {
       return 'images/frown.png';
     } else if (rate < 0.66) {
@@ -192,105 +308,5 @@ class _SubjectPageState extends State<SubjectPage> {
     } else {
       return 'images/smile.png';
     }
-  }
-
-  // Set up all these methods using database
-
-  // Given subject code get subject name
-
-  String getSubjectName(String subjectCode) {
-    FirebaseFirestore.instance
-    .collection('subjects')
-    .where('subjectCode', isEqualTo: subjectCode)
-    .get()
-    .then((QuerySnapshot querySnapshot) {
-        querySnapshot.docs.forEach((doc) {
-          return doc['subjectName'];
-        });
-    });
-
-    return '';
-  }
-
-  // Get all reviews for the specified subject code
-
-  List<ProfileReview> getSubjectReviews(String subjectCode) {
-    List<ProfileReview> reviews = [];
-
-    FirebaseFirestore.instance
-    .collection('reviews')
-    .where('subjectCode', isEqualTo: subjectCode)
-    .get()
-    .then((QuerySnapshot querySnapshot) {
-        querySnapshot.docs.forEach((doc) {
-
-          var review = ProfileReview(
-        review: Review(
-            ratings: Rating(
-                difficulty: Score(score: doc['difficulty']),
-                interest: Score(score: doc['interesting']),
-                teaching: Score(score: doc['teachingQuality'])),
-            reviewTxt: doc['reviewText'],
-            lecturer: doc['lecturer'],
-            likes: Likes(likeCount: 0),
-            recommend: doc['recommended'],
-            year: doc['year'],
-            sem: doc['semesterTaken']),
-
-        username: getUsername(doc['userID']),
-        major: getMajors(doc['userID']));
-
-        reviews.add(review);
-        });
-    });
-
-    return reviews;
-  }
-
-  // Get the handbook link given the subject code
-
-  String getHandbookLink(String subjectCode) {
-
-    FirebaseFirestore.instance
-    .collection('subjects')
-    .where('subjectCode', isEqualTo: subjectCode)
-    .get()
-    .then((QuerySnapshot querySnapshot) {
-        querySnapshot.docs.forEach((doc) {
-          return doc['link'];
-        });
-    });
-
-    return '';
-  }
-
-  String getUsername(String userID) {
-
-    FirebaseFirestore.instance
-    .collection('users')
-    .where('uid', isEqualTo: userID)
-    .get()
-    .then((QuerySnapshot querySnapshot) {
-        querySnapshot.docs.forEach((doc) {
-          return doc['name'];
-        });
-    });
-
-    return '';
-  }
-
-  String getMajors(String userID) {
-
-    FirebaseFirestore.instance
-    .collection('users')
-    .where('uid', isEqualTo: userID)
-    .get()
-    .then((QuerySnapshot querySnapshot) {
-        querySnapshot.docs.forEach((doc) {
-          return doc['major'];
-        });
-    });
-
-    return '';
   }
 }
