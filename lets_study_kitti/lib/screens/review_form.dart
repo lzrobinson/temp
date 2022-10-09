@@ -26,14 +26,27 @@ class ReviewForm extends StatefulWidget {
 class _ReviewFormState extends State<ReviewForm> {
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
 
-  static const Map<String, String> _subjectCodes = <String, String>{
-    'IT Project': 'COMP30023',
-    'Foundations of Computing': 'COMP10001',
-    'Algorithms and Data Structures': 'COMP20008',
-  };
-
+  Map<String, String> _subjectCodes = {};
+  final _firestore = FirebaseFirestore.instance;
   bool isLoading = false;
   String forSubject = '';
+
+  void addSubjectCodes(){
+    _firestore.collection('subjects')
+    .get()
+    .then((QuerySnapshot querySnapshot) {
+      setState(() {
+        querySnapshot.docs.forEach((doc) {
+          _subjectCodes[doc['subjectName']] = doc['subjectCode'];
+        });
+      });
+    });
+  }
+
+  void initState(){
+    super.initState();
+    addSubjectCodes();
+  }
 
   @override
   Widget build(BuildContext context) {
