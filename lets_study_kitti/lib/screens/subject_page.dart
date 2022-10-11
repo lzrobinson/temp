@@ -26,8 +26,8 @@ class SubjectPage extends StatefulWidget {
 }
 
 class _SubjectPageState extends State<SubjectPage> {
-
   final _firestore = FirebaseFirestore.instance;
+  Map<String, List<String>> _userDetails = {};
   var reviews = [];
   var reviewLen = 0;
   var recommendNum = 0;
@@ -36,23 +36,25 @@ class _SubjectPageState extends State<SubjectPage> {
   var name = '';
   var majors = '';
 
-  void initState(){
+  @override
+  void initState() {
     super.initState();
     getSubjectName(widget.subjectCode);
     getRecommended(widget.subjectCode);
     getHandbookLink(widget.subjectCode);
-    //getSubjectReviews(widget.subjectCode);
+    addUserDetails();
   }
 
   // Given subject code get subject name
   void getSubjectName(String subjectCode) {
-    _firestore.collection('subjects')
-    .where('subjectCode', isEqualTo: subjectCode)
-    .get()
-    .then((QuerySnapshot querySnapshot) {
+    _firestore
+        .collection('subjects')
+        .where('subjectCode', isEqualTo: subjectCode)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
       setState(() {
         querySnapshot.docs.forEach((doc) {
-          subjectName = doc['subjectName']; 
+          subjectName = doc['subjectName'];
         });
       });
     });
@@ -60,82 +62,77 @@ class _SubjectPageState extends State<SubjectPage> {
 
 // Get the handbook link given the subject code
   void getHandbookLink(String subjectCode) {
-    _firestore.collection('subjects')
-    .where('subjectCode', isEqualTo: subjectCode)
-    .get()
-    .then((QuerySnapshot querySnapshot) {
+    _firestore
+        .collection('subjects')
+        .where('subjectCode', isEqualTo: subjectCode)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
       setState(() {
         querySnapshot.docs.forEach((doc) {
           handbookLink = doc['link'];
-        });    
+        });
       });
     });
   }
 
   void getRecommended(String subjectCode) {
-    _firestore.collection('reviews')
-    .where('subjectCode', isEqualTo: subjectCode)
-    .get()
-    .then((QuerySnapshot querySnapshot) {
+    _firestore
+        .collection('reviews')
+        .where('subjectCode', isEqualTo: subjectCode)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
       setState(() {
         querySnapshot.docs.forEach((doc) {
-          if (doc['recommended'] == 'Yes'){
+          if (doc['recommended'] == 'Yes') {
             recommendNum += 1;
           }
           reviewLen += 1;
-        }); 
+        });
       });
     });
   }
 
   // Get the majors and  given the userID
-  void getUserDetails(String userID) {
-
-    _firestore.collection('users')
-    .where('uid', isEqualTo: userID)
-    .get()
-    .then((QuerySnapshot querySnapshot) {
+  void addUserDetails() {
+    _firestore.collection('users').get().then((QuerySnapshot querySnapshot) {
       setState(() {
         querySnapshot.docs.forEach((doc) {
           name = doc['name'];
           majors = doc['major'];
+          _userDetails[doc['uid']] = [name, majors];
         });
-      });     
+      });
     });
   }
 
-
-
   // Get all reviews for the specified subject code
   void getSubjectReviews(String subjectCode) {
-
-    _firestore.collection('reviews')
-    .where('subjectCode', isEqualTo: subjectCode)
-    .get()
-    .then((QuerySnapshot querySnapshot) {
+    _firestore
+        .collection('reviews')
+        .where('subjectCode', isEqualTo: subjectCode)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
       setState(() {
         querySnapshot.docs.forEach((doc) {
           //getUserDetails(doc['uid']);
-          reviews.add(
-            ProfileReview(
+          reviews.add(ProfileReview(
               review: Review(
-                ratings: Rating(
-                  difficulty: Score(score: doc['difficulty']),
-                  interest: Score(score: doc['interesting']),
-                  teaching: Score(score: doc['teachingQuality'])),
+                  ratings: Rating(
+                      difficulty: Score(score: doc['difficulty']),
+                      interest: Score(score: doc['interesting']),
+                      teaching: Score(score: doc['teachingQuality'])),
                   reviewTxt: doc['reviewText'],
                   lecturer: doc['lecturer'],
                   likes: Likes(likeCount: 0),
                   recommend: doc['recommended'],
                   year: doc['year'],
                   sem: doc['semesterTaken']),
-                  username: name,
-                  major: majors));
+              username: name,
+              major: majors));
         });
       });
     });
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -161,8 +158,7 @@ class _SubjectPageState extends State<SubjectPage> {
             child: Container(
               padding: const EdgeInsets.fromLTRB(
                   boundarySize + 2 * hOffset, 25, 0, 25),
-              child: Text(
-                  '${subjectName} - ${widget.subjectCode}',
+              child: Text('${subjectName} - ${widget.subjectCode}',
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 30)),
             ),
@@ -173,10 +169,10 @@ class _SubjectPageState extends State<SubjectPage> {
               padding: const EdgeInsets.fromLTRB(
                   boundarySize + 2 * hOffset, 0, 0, 0),
               child: Row(children: [
-                Image.asset(getRecommendationImage(recommendNum/reviewLen),
+                Image.asset(getRecommendationImage(recommendNum / reviewLen),
                     height: imgSize / 2, width: imgSize / 2),
                 const SizedBox(width: 10),
-                Text("${(recommendNum/reviewLen * 100).toStringAsFixed(1)}%",
+                Text("${(recommendNum / reviewLen * 100).toStringAsFixed(1)}%",
                     style: const TextStyle(fontSize: 30)),
                 const Text('  Recommended', style: TextStyle(fontSize: 12))
               ]),
@@ -229,8 +225,8 @@ class _SubjectPageState extends State<SubjectPage> {
                             alignment: Alignment.centerLeft,
                             child: InkWell(
                                 child: const Text('Handbook Link'),
-                                onTap: () => launchUrl(Uri.parse(
-                                    handbookLink))),
+                                onTap: () =>
+                                    launchUrl(Uri.parse(handbookLink))),
                           )
                         ],
                       )))),
@@ -271,16 +267,80 @@ class _SubjectPageState extends State<SubjectPage> {
                             ),
                           ],
                         ),
-                        Container(
-                            
-                            padding:
-                                const EdgeInsets.fromLTRB(0, vOffset, 0, 0),
-                            alignment: Alignment.centerLeft,
-                            child: InkWell(
-                                child: const Text('Handbook Link'),
-                                onTap: () => launchUrl(Uri.parse(
-                                    handbookLink))),       
-                            ),
+                        StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('reviews')
+                                .where('subjectCode',
+                                    isEqualTo: widget.subjectCode)
+                                .snapshots(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (!snapshot.hasData) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              return ListView(
+                                shrinkWrap: true,
+                                children: snapshot.data!.docs.map((document) {
+                                  //var text = document['reviewTxt'];
+/*
+                                YoutubePlayerController _controller = YoutubePlayerController(
+                                  initialVideoId: YoutubePlayer.convertUrlToId(url),
+                                  flags: YoutubePlayerFlags(
+                                    autoPlay: false,
+                                    mute: false,
+                                    disableDragSeek: false,
+                                    loop: false,
+                                    isLive: false,
+                                    forceHD: false,
+                                  ),
+                                );*/
+                                  return Container(
+                                          child: ProfileReview(
+                                              major: _userDetails[
+                                                  document['userID']]![1],
+                                              username: _userDetails[
+                                                  document['userID']]![0],
+                                              review: Review(
+                                                  ratings: Rating(
+                                                      difficulty: Score(
+                                                          score: int.parse(
+                                                              document[
+                                                                  'difficulty'])),
+                                                      interest: Score(
+                                                          score:
+                                                              int.parse(document['interesting'])),
+                                                      teaching: Score(score: int.parse(document['teachingQuality']))),
+                                                  reviewTxt: document['reviewText'],
+                                                  lecturer: document['lecturer'],
+                                                  likes: Likes(likeCount: 0),
+                                                  recommend: document['recommended'],
+                                                  year: document['year'],
+                                                  sem: document['semesterTaken'])))
+
+                                      /* return Center(
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width /
+                                          1.2,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              top: 20,
+                                              bottom: 5,
+                                            ),
+                                            child: Text(
+                                              document['reviewText'],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )*/
+                                      ;
+                                }).toList(),
+                              );
+                            }),
                       ]))))
         ]));
   }
