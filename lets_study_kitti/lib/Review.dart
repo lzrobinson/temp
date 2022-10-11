@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lets_study_kitti/rating.dart' show Rating;
 import 'package:lets_study_kitti/likes.dart' show Likes;
 
+// Base review display class
+
 class Review extends StatefulWidget {
   final Rating ratings;
   final String reviewTxt;

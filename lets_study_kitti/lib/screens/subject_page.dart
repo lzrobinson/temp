@@ -260,19 +260,19 @@ class _SubjectPageState extends State<SubjectPage> {
                                                   document['userID'])
                                               ? _userDetails[
                                                   document['userID']]![1]
-                                              : 'N/A',
-                                          username: _userDetails.containsKey(
-                                                  document['userID'])
-                                              ? _userDetails[
-                                                  document['userID']]![0]
-                                              : 'Discord User',
+                                              : 'Loading Major',
+                                          username:
+                                              _userDetails.containsKey(document['userID'])
+                                                  ? _userDetails[
+                                                      document['userID']]![0]
+                                                  : 'Loading User',
                                           review: Review(
                                               ratings: Rating(
                                                   difficulty: Score(
-                                                      score:
-                                                          int.parse(document['difficulty'])),
-                                                  interest: Score(score: int.parse(document['interesting'])),
-                                                  teaching: Score(score: int.parse(document['teachingQuality']))),
+                                                      score: double.parse(
+                                                          document['difficulty'])),
+                                                  interest: Score(score: double.parse(document['interesting'])),
+                                                  teaching: Score(score: double.parse(document['teachingQuality']))),
                                               reviewTxt: document['reviewText'],
                                               lecturer: document['lecturer'],
                                               likes: const Likes(likeCount: 0),

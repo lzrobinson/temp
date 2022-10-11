@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 const double imgSize = 50;
 
+// Currently un-used
+
 class Likes extends StatefulWidget {
   final int likeCount;
 

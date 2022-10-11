@@ -54,20 +54,3 @@ ReviewFormPage reviewFormPage = const ReviewFormPage();
 SubjectPage subjectPage = const SubjectPage(subjectCode: '30023');
 LoginPage loginPage = const LoginPage();
 SignUpPage signUpPage = const SignUpPage();
-
-/*
-
-var review1 = new ProfileReview.noPic(2, 3, 4, 'Boring and hard', 'Vinay', '(Major of Computing)', 'Paul Jones', 10);
-var review2 = new ProfileReview.noPic(5, 8, 9, 'Fantastic subject', 'Abrar', '(Major of Engineering)', 'Mr Man', 5);
-var review3 = new ProfileReview(4, 10, 8, 'Ehhhhh', 'Sen','assets/images/sen-turner.png', '(Major of Data Science)', 'Sen', 3);
-
-var form = new ReviewForm();
-
-var reviews = ListView(children: [
-  review1,
-  Divider(color: Colors.black, height: 30),
-  review2,
-  Divider(color: Colors.black, height: 30),
-  review3,
-], shrinkWrap: true);
-*/
