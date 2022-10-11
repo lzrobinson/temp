@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_study_kitti/routes.dart';
@@ -5,14 +6,38 @@ import 'package:lets_study_kitti/screens/subject_page.dart';
 
 const boxColor = Color.fromARGB(255, 254, 244, 225);
 
-class MyNavigationBar extends StatelessWidget with PreferredSizeWidget {
+class MyNavigationBar extends StatefulWidget with PreferredSizeWidget {
   const MyNavigationBar({super.key});
 
-  static const Map<String, String> _subjectCodes = <String, String>{
-    'IT Project': 'COMP30023',
-    'Foundations of Computing': 'COMP10001',
-    'Algorithms and Data Structures': 'COMP20008',
-  };
+  @override
+  State<MyNavigationBar> createState() {
+    return _MyNavigationBarState();
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class _MyNavigationBarState extends State<MyNavigationBar> {
+  Map<String, String> _subjectCodes = {};
+  final _firestore = FirebaseFirestore.instance;
+  bool isLoading = false;
+  String forSubject = '';
+
+  void addSubjectCodes() {
+    _firestore.collection('subjects').get().then((QuerySnapshot querySnapshot) {
+      setState(() {
+        querySnapshot.docs.forEach((doc) {
+          _subjectCodes[doc['subjectName']] = doc['subjectCode'];
+        });
+      });
+    });
+  }
+
+  void initState() {
+    super.initState();
+    addSubjectCodes();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +105,4 @@ class MyNavigationBar extends StatelessWidget with PreferredSizeWidget {
       ),
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

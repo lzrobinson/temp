@@ -31,10 +31,8 @@ class _ReviewFormState extends State<ReviewForm> {
   bool isLoading = false;
   String forSubject = '';
 
-  void addSubjectCodes(){
-    _firestore.collection('subjects')
-    .get()
-    .then((QuerySnapshot querySnapshot) {
+  void addSubjectCodes() {
+    _firestore.collection('subjects').get().then((QuerySnapshot querySnapshot) {
       setState(() {
         querySnapshot.docs.forEach((doc) {
           _subjectCodes[doc['subjectName']] = doc['subjectCode'];
@@ -43,7 +41,7 @@ class _ReviewFormState extends State<ReviewForm> {
     });
   }
 
-  void initState(){
+  void initState() {
     super.initState();
     addSubjectCodes();
   }
