@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:review_threads/heading_bar.dart';
 import 'package:review_threads/profile_bar.dart';
+import 'package:review_threads/review_card.dart';
 
 class Review extends StatelessWidget {
   const Review({super.key});
@@ -28,9 +29,13 @@ class Review extends StatelessWidget {
           ),
           HeadingBar('Review'),
           ProfileBar('Sen', 'Major of Data Science'),
+          SizedBox(
+            height: 15,
+          ),
+          SizedBox(height: 15,),
+          ReviewCard(),
         ],
       ),
     );
   }
 }
-
