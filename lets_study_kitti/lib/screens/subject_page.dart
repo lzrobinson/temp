@@ -19,140 +19,275 @@ class SubjectPage extends StatefulWidget {
   const SubjectPage({Key? key, required this.subjectCode}) : super(key: key);
 
   @override
-  State<SubjectPage> createState() {
+  _SubjectPageState createState() {
     return _SubjectPageState();
   }
 }
 
 class _SubjectPageState extends State<SubjectPage> {
+  final _firestore = FirebaseFirestore.instance;
+  Map<String, List<String>> _userDetails = {};
+  var reviews = [];
+  var reviewLen = 0;
+  var recommendNum = 0;
+  var handbookLink = '';
+  var subjectName = '';
+  var name = '';
+  var majors = '';
+  bool _loading = true;
+
   @override
-  Widget build(BuildContext context) {
-    List<ProfileReview> reviews = getSubjectReviews(widget.subjectCode);
-    return Scaffold(
-        appBar: const MyNavigationBar(),
-        body: ListView(shrinkWrap: true, children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(
-                  boundarySize + 2 * hOffset, 25, 0, 25),
-              child: Text(
-                  '${getSubjectName(widget.subjectCode)} - ${widget.subjectCode}',
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 30)),
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(
-                  boundarySize + 2 * hOffset, 0, 0, 0),
-              child: Row(children: [
-                Image.asset(getRecommendationImage(reviews),
-                    height: imgSize / 2, width: imgSize / 2),
-                const SizedBox(width: 10),
-                Text("${(recommendedRate(reviews) * 100).toStringAsFixed(1)}%",
-                    style: const TextStyle(fontSize: 30)),
-                const Text('  Recommended', style: TextStyle(fontSize: 12))
-              ]),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(
-                left: boundarySize + hOffset, right: boundarySize + hOffset),
-            child: const Divider(color: Colors.black, height: 30),
-          ),
-          Container(
-              padding: const EdgeInsets.only(
-                  left: boundarySize, right: boundarySize),
-              child: Card(
-                  child: Container(
-                      padding: const EdgeInsets.only(
-                          left: hOffset,
-                          right: hOffset,
-                          top: vOffset,
-                          bottom: vOffset),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: const [
-                              SizedBox(
-                                width: 50,
-                                height: 30,
-                                child: DecoratedBox(
-                                  decoration:
-                                      BoxDecoration(color: Colors.orange),
-                                ),
-                              ),
-                              Text('  Subject Information  ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18)),
-                              SizedBox(
-                                width: 690,
-                                height: 30,
-                                child: DecoratedBox(
-                                  decoration:
-                                      BoxDecoration(color: Colors.orange),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            padding:
-                                const EdgeInsets.fromLTRB(0, vOffset, 0, 0),
-                            alignment: Alignment.centerLeft,
-                            child: InkWell(
-                                child: const Text('Handbook Link'),
-                                onTap: () => launchUrl(Uri.parse(
-                                    getHandbookLink(widget.subjectCode)))),
-                          )
-                        ],
-                      )))),
-          Container(
-            padding: const EdgeInsets.only(
-                left: boundarySize + hOffset, right: boundarySize + hOffset),
-            child: const Divider(color: Colors.black, height: 30),
-          ),
-          Container(
-              padding: const EdgeInsets.only(
-                  left: boundarySize, right: boundarySize),
-              child: Card(
-                  child: Container(
-                      padding: const EdgeInsets.only(
-                          left: hOffset,
-                          right: hOffset,
-                          top: vOffset,
-                          bottom: vOffset),
-                      child: Column(children: [
-                        Row(
-                          children: const [
-                            SizedBox(
-                              width: 50,
-                              height: 30,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(color: Colors.orange),
-                              ),
-                            ),
-                            Text('  Reviews  ',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18)),
-                            SizedBox(
-                              width: 780,
-                              height: 30,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(color: Colors.orange),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: vOffset),
-                        ListView(shrinkWrap: true, children: reviews)
-                      ]))))
-        ]));
+  void initState() {
+    super.initState();
+    addUserDetails();
+    getSubjectName(widget.subjectCode);
+    getRecommended(widget.subjectCode);
+    getHandbookLink(widget.subjectCode);
+    setState(() {
+      _loading = false;
+    });
   }
 
-  double recommendedRate(List<ProfileReview> reviews) {
+  // Given subject code get subject name
+  void getSubjectName(String subjectCode) {
+    _firestore
+        .collection('subjects')
+        .where('subjectCode', isEqualTo: subjectCode)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      setState(() {
+        querySnapshot.docs.forEach((doc) {
+          subjectName = doc['subjectName'];
+        });
+      });
+    });
+  }
+
+// Get the handbook link given the subject code
+  void getHandbookLink(String subjectCode) {
+    _firestore
+        .collection('subjects')
+        .where('subjectCode', isEqualTo: subjectCode)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      setState(() {
+        querySnapshot.docs.forEach((doc) {
+          handbookLink = doc['link'];
+        });
+      });
+    });
+  }
+
+  void getRecommended(String subjectCode) {
+    _firestore
+        .collection('reviews')
+        .where('subjectCode', isEqualTo: subjectCode)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      setState(() {
+        querySnapshot.docs.forEach((doc) {
+          if (doc['recommended'] == 'Yes') {
+            recommendNum += 1;
+          }
+          reviewLen += 1;
+        });
+      });
+    });
+  }
+
+  // Get the majors and  given the userID
+  void addUserDetails() {
+    _firestore.collection('users').get().then((QuerySnapshot querySnapshot) {
+      setState(() {
+        querySnapshot.docs.forEach((doc) {
+          name = doc['name'];
+          majors = doc['major'];
+          _userDetails[doc['uid']] = [name, majors];
+        });
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _loading
+        ? CircularProgressIndicator()
+        : Scaffold(
+            appBar: const MyNavigationBar(),
+            body: ListView(shrinkWrap: true, children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(
+                      boundarySize + 2 * hOffset, 25, 0, 25),
+                  child: Text('${subjectName} - ${widget.subjectCode}',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 30)),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(
+                      boundarySize + 2 * hOffset, 0, 0, 0),
+                  child: Row(children: [
+                    Image.asset(
+                        getRecommendationImage(recommendNum / reviewLen),
+                        height: imgSize / 2,
+                        width: imgSize / 2),
+                    const SizedBox(width: 10),
+                    Text(
+                        "${(recommendNum / reviewLen * 100).toStringAsFixed(1)}%",
+                        style: const TextStyle(fontSize: 30)),
+                    const Text('  Recommended', style: TextStyle(fontSize: 12))
+                  ]),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(
+                    left: boundarySize + hOffset,
+                    right: boundarySize + hOffset),
+                child: const Divider(color: Colors.black, height: 30),
+              ),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: boundarySize, right: boundarySize),
+                  child: Card(
+                      child: Container(
+                          padding: const EdgeInsets.only(
+                              left: hOffset,
+                              right: hOffset,
+                              top: vOffset,
+                              bottom: vOffset),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: const [
+                                  SizedBox(
+                                    width: 50,
+                                    height: 30,
+                                    child: DecoratedBox(
+                                      decoration:
+                                          BoxDecoration(color: Colors.orange),
+                                    ),
+                                  ),
+                                  Text('  Subject Information  ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18)),
+                                  SizedBox(
+                                    width: 690,
+                                    height: 30,
+                                    child: DecoratedBox(
+                                      decoration:
+                                          BoxDecoration(color: Colors.orange),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, vOffset, 0, 0),
+                                alignment: Alignment.centerLeft,
+                                child: InkWell(
+                                    child: const Text('Handbook Link'),
+                                    onTap: () =>
+                                        launchUrl(Uri.parse(handbookLink))),
+                              )
+                            ],
+                          )))),
+              Container(
+                padding: const EdgeInsets.only(
+                    left: boundarySize + hOffset,
+                    right: boundarySize + hOffset),
+                child: const Divider(color: Colors.black, height: 30),
+              ),
+              Container(
+                  padding: const EdgeInsets.only(
+                      left: boundarySize, right: boundarySize),
+                  child: Card(
+                      child: Container(
+                          padding: const EdgeInsets.only(
+                              left: hOffset,
+                              right: hOffset,
+                              top: vOffset,
+                              bottom: vOffset),
+                          child: Column(children: [
+                            Row(
+                              children: const [
+                                SizedBox(
+                                  width: 50,
+                                  height: 30,
+                                  child: DecoratedBox(
+                                    decoration:
+                                        BoxDecoration(color: Colors.orange),
+                                  ),
+                                ),
+                                Text('  Reviews  ',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18)),
+                                SizedBox(
+                                  width: 780,
+                                  height: 30,
+                                  child: DecoratedBox(
+                                    decoration:
+                                        BoxDecoration(color: Colors.orange),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            StreamBuilder(
+                                stream: FirebaseFirestore.instance
+                                    .collection('reviews')
+                                    .where('subjectCode',
+                                        isEqualTo: widget.subjectCode)
+                                    .snapshots(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if (!snapshot.hasData) {
+                                    return const Center(
+                                        child: CircularProgressIndicator(
+                                            color: Colors.orange));
+                                  }
+                                  return ListView(
+                                    shrinkWrap: true,
+                                    children:
+                                        snapshot.data!.docs.map((document) {
+                                      return ProfileReview(
+                                          major: _userDetails.containsKey(
+                                                  document['userID'])
+                                              ? _userDetails[
+                                                  document['userID']]![1]
+                                              : 'N/A',
+                                          username: _userDetails.containsKey(
+                                                  document['userID'])
+                                              ? _userDetails[
+                                                  document['userID']]![0]
+                                              : 'Discord User',
+                                          review: Review(
+                                              ratings: Rating(
+                                                  difficulty: Score(
+                                                      score:
+                                                          int.parse(document['difficulty'])),
+                                                  interest: Score(score: int.parse(document['interesting'])),
+                                                  teaching: Score(score: int.parse(document['teachingQuality']))),
+                                              reviewTxt: document['reviewText'],
+                                              lecturer: document['lecturer'],
+                                              likes: const Likes(likeCount: 0),
+                                              recommend: document['recommended'],
+                                              year: document['year'],
+                                              sem: document['semesterTaken'],
+                                              stream: document['subjectType']));
+                                    }).toList(),
+                                  );
+                                }),
+                          ]))))
+            ]));
+  }
+
+  double recommendedRate(List<dynamic> reviews) {
     int yesCount = 0;
     int noCount = 0;
 
@@ -167,9 +302,7 @@ class _SubjectPageState extends State<SubjectPage> {
     return yesCount / (yesCount + noCount);
   }
 
-  String getRecommendationImage(List<ProfileReview> reviews) {
-    double rate = recommendedRate(reviews);
-
+  String getRecommendationImage(double rate) {
     if (rate < 0.33) {
       return 'images/frown.png';
     } else if (rate < 0.66) {
@@ -177,101 +310,5 @@ class _SubjectPageState extends State<SubjectPage> {
     } else {
       return 'images/smile.png';
     }
-  }
-
-  // Set up all these methods using database
-
-  // Given subject code get subject name
-
-  String getSubjectName(String subjectCode) {
-    FirebaseFirestore.instance
-        .collection('subjects')
-        .where('subjectCode', isEqualTo: subjectCode)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        return doc['subjectName'];
-      });
-    });
-
-    return '';
-  }
-
-  // Get all reviews for the specified subject code
-
-  List<ProfileReview> getSubjectReviews(String subjectCode) {
-    List<ProfileReview> reviews = [];
-
-    FirebaseFirestore.instance
-        .collection('reviews')
-        .where('subjectCode', isEqualTo: subjectCode)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        var review = ProfileReview(
-            review: Review(
-                ratings: Rating(
-                    difficulty: Score(score: doc['difficulty']),
-                    interest: Score(score: doc['interesting']),
-                    teaching: Score(score: doc['teachingQuality'])),
-                reviewTxt: doc['reviewText'],
-                lecturer: doc['lecturer'],
-                likes: Likes(likeCount: 0),
-                recommend: doc['recommended'],
-                year: doc['year'],
-                sem: doc['semesterTaken'],
-                stream: doc['subjectType']),
-            username: getUsername(doc['userID']),
-            major: getMajors(doc['userID']));
-
-        reviews.add(review);
-      });
-    });
-
-    return reviews;
-  }
-
-  // Get the handbook link given the subject code
-
-  String getHandbookLink(String subjectCode) {
-    FirebaseFirestore.instance
-        .collection('subjects')
-        .where('subjectCode', isEqualTo: subjectCode)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        return doc['link'];
-      });
-    });
-
-    return '';
-  }
-
-  String getUsername(String userID) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .where('uid', isEqualTo: userID)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        return doc['name'];
-      });
-    });
-
-    return '';
-  }
-
-  String getMajors(String userID) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .where('uid', isEqualTo: userID)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        return doc['major'];
-      });
-    });
-
-    return '';
   }
 }
