@@ -267,6 +267,7 @@ class _SubjectPageState extends State<SubjectPage> {
                             ),
                           ],
                         ),
+                        const SizedBox(height: 10),
                         StreamBuilder(
                             stream: FirebaseFirestore.instance
                                 .collection('reviews')
@@ -277,7 +278,8 @@ class _SubjectPageState extends State<SubjectPage> {
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
                               if (!snapshot.hasData) {
                                 return Center(
-                                    child: CircularProgressIndicator());
+                                    child: CircularProgressIndicator(
+                                        color: Colors.orange));
                               }
                               return ListView(
                                 shrinkWrap: true,
@@ -295,30 +297,30 @@ class _SubjectPageState extends State<SubjectPage> {
                                     forceHD: false,
                                   ),
                                 );*/
-                                  return Container(
-                                          child: ProfileReview(
-                                              major: _userDetails[
-                                                  document['userID']]![1],
-                                              username: _userDetails[
-                                                  document['userID']]![0],
-                                              review: Review(
-                                                  ratings: Rating(
-                                                      difficulty: Score(
-                                                          score: int.parse(
-                                                              document[
-                                                                  'difficulty'])),
-                                                      interest: Score(
-                                                          score:
-                                                              int.parse(document['interesting'])),
-                                                      teaching: Score(score: int.parse(document['teachingQuality']))),
-                                                  reviewTxt: document['reviewText'],
-                                                  lecturer: document['lecturer'],
-                                                  likes: Likes(likeCount: 0),
-                                                  recommend: document['recommended'],
-                                                  year: document['year'],
-                                                  sem: document['semesterTaken'])))
+                                  return ProfileReview(
+                                      major:
+                                          _userDetails[document['userID']]![1],
+                                      username:
+                                          _userDetails[document['userID']]![0],
+                                      review: Review(
+                                          ratings: Rating(
+                                              difficulty: Score(
+                                                  score: int.parse(
+                                                      document['difficulty'])),
+                                              interest: Score(
+                                                  score: int.parse(
+                                                      document['interesting'])),
+                                              teaching: Score(
+                                                  score: int.parse(document[
+                                                      'teachingQuality']))),
+                                          reviewTxt: document['reviewText'],
+                                          lecturer: document['lecturer'],
+                                          likes: Likes(likeCount: 0),
+                                          recommend: document['recommended'],
+                                          year: document['year'],
+                                          sem: document['semesterTaken']));
 
-                                      /* return Center(
+                                  /* return Center(
                                     child: Container(
                                       width: MediaQuery.of(context).size.width /
                                           1.2,
@@ -337,7 +339,6 @@ class _SubjectPageState extends State<SubjectPage> {
                                       ),
                                     ),
                                   )*/
-                                      ;
                                 }).toList(),
                               );
                             }),
