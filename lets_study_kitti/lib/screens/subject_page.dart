@@ -105,34 +105,6 @@ class _SubjectPageState extends State<SubjectPage> {
     });
   }
 
-  // Get all reviews for the specified subject code
-  void getSubjectReviews(String subjectCode) {
-    _firestore
-        .collection('reviews')
-        .where('subjectCode', isEqualTo: subjectCode)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      setState(() {
-        querySnapshot.docs.forEach((doc) {
-          //getUserDetails(doc['uid']);
-          reviews.add(ProfileReview(
-              review: Review(
-                  ratings: Rating(
-                      difficulty: Score(score: doc['difficulty']),
-                      interest: Score(score: doc['interesting']),
-                      teaching: Score(score: doc['teachingQuality'])),
-                  reviewTxt: doc['reviewText'],
-                  lecturer: doc['lecturer'],
-                  likes: Likes(likeCount: 0),
-                  recommend: doc['recommended'],
-                  year: doc['year'],
-                  sem: doc['semesterTaken']),
-              username: name,
-              major: majors));
-        });
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -305,14 +277,14 @@ class _SubjectPageState extends State<SubjectPage> {
                                       review: Review(
                                           ratings: Rating(
                                               difficulty: Score(
-                                                  score: int.parse(
-                                                      document['difficulty'])),
+                                                  score: 
+                                                      document['difficulty'].round()),
                                               interest: Score(
-                                                  score: int.parse(
-                                                      document['interesting'])),
+                                                  score: 
+                                                      document['interesting'].round()),
                                               teaching: Score(
-                                                  score: int.parse(document[
-                                                      'teachingQuality']))),
+                                                  score: 
+                                                  document['teachingQuality'].round())),
                                           reviewTxt: document['reviewText'],
                                           lecturer: document['lecturer'],
                                           likes: Likes(likeCount: 0),
@@ -346,20 +318,7 @@ class _SubjectPageState extends State<SubjectPage> {
         ]));
   }
 
-  double recommendedRate(List<dynamic> reviews) {
-    int yesCount = 0;
-    int noCount = 0;
 
-    for (ProfileReview review in reviews) {
-      if (review.getReview().getRecommended() == 'Yes') {
-        yesCount++;
-      } else {
-        noCount++;
-      }
-    }
-
-    return yesCount / (yesCount + noCount);
-  }
 
   String getRecommendationImage(double rate) {
     if (rate < 0.33) {
