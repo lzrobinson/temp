@@ -269,10 +269,10 @@ class _SubjectPageState extends State<SubjectPage> {
                                           review: Review(
                                               ratings: Rating(
                                                   difficulty: Score(
-                                                      score: double.parse(
-                                                          document['difficulty'])),
-                                                  interest: Score(score: double.parse(document['interesting'])),
-                                                  teaching: Score(score: double.parse(document['teachingQuality']))),
+                                                      score: 
+                                                          document['difficulty']),
+                                                  interest: Score(score: document['interesting']),
+                                                  teaching: Score(score: document['teachingQuality'])),
                                               reviewTxt: document['reviewText'],
                                               lecturer: document['lecturer'],
                                               likes: const Likes(likeCount: 0),
