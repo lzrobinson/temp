@@ -130,17 +130,25 @@ class _SubjectPageState extends State<SubjectPage> {
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(
                       boundarySize + 2 * hOffset, 0, 0, 0),
-                  child: Row(children: [
-                    Image.asset(
-                        getRecommendationImage(recommendNum / reviewLen),
-                        height: imgSize / 2,
-                        width: imgSize / 2),
-                    const SizedBox(width: 10),
-                    Text(
-                        "${(recommendNum / reviewLen * 100).toStringAsFixed(1)}%",
-                        style: const TextStyle(fontSize: 30)),
-                    const Text('  Recommended', style: TextStyle(fontSize: 12))
-                  ]),
+                  child: Row(
+                      children: reviewLen != 0
+                          ? [
+                              Image.asset(
+                                  getRecommendationImage(
+                                      recommendNum / reviewLen),
+                                  height: imgSize / 2,
+                                  width: imgSize / 2),
+                              const SizedBox(width: 10),
+                              Text(
+                                  "${(recommendNum / reviewLen * 100).toStringAsFixed(1)}%",
+                                  style: const TextStyle(fontSize: 30)),
+                              const Text('  Recommended',
+                                  style: TextStyle(fontSize: 12))
+                            ]
+                          : [
+                              const Text('No Reviews Yet',
+                                  style: TextStyle(fontSize: 24))
+                            ]),
                 ),
               ),
               Container(
@@ -261,15 +269,15 @@ class _SubjectPageState extends State<SubjectPage> {
                                               ? _userDetails[
                                                   document['userID']]![1]
                                               : 'Loading Major',
-                                          username:
-                                              _userDetails.containsKey(document['userID'])
-                                                  ? _userDetails[
-                                                      document['userID']]![0]
-                                                  : 'Loading User',
+                                          username: _userDetails.containsKey(
+                                                  document['userID'])
+                                              ? _userDetails[
+                                                  document['userID']]![0]
+                                              : 'Loading User',
                                           review: Review(
                                               ratings: Rating(
                                                   difficulty: Score(
-                                                      score: 
+                                                      score:
                                                           document['difficulty']),
                                                   interest: Score(score: document['interesting']),
                                                   teaching: Score(score: document['teachingQuality'])),
