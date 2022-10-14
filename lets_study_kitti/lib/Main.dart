@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lets_study_kitti/home_page/home_page.dart';
 import 'package:lets_study_kitti/routes.dart';
+import 'package:lets_study_kitti/screens/email_verification.dart';
 import 'package:lets_study_kitti/screens/login_page.dart';
 import 'package:lets_study_kitti/screens/review_form_page.dart'
     show ReviewFormPage;
@@ -37,6 +38,8 @@ class MyApp extends StatelessWidget {
         Routes.subjectPage: (BuildContext context) =>
             const SubjectPage(subjectCode: '30023'),
         Routes.homePage: (BuildContext context) => const HomePage(),
+        Routes.verifyEmailPage: (BuildContext context) =>
+            const VerificationPage(),
       },
       title: 'Flutter FormBuilder Demo',
       debugShowCheckedModeBanner: false,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:lets_study_kitti/home_page/my_navigation_bar.dart';
+import 'package:lets_study_kitti/home_page/website_title.dart';
 import 'package:lets_study_kitti/routes.dart';
 import 'package:lets_study_kitti/services/firebase_helper.dart';
 
@@ -35,14 +36,9 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
         appBar: const MyNavigationBar(),
         body: ListView(shrinkWrap: true, children: [
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(0, 25, 0, 25),
-              child: const Text("Let's Study Kitti",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-            ),
-          ),
+          const SizedBox(height: 50),
+          const WebsiteTitle(),
+          const SizedBox(height: 50),
           Center(
               child: Container(
                   alignment: Alignment.center,
@@ -328,7 +324,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                                       }
                                                       Navigator.pushNamed(
                                                           context,
-                                                          Routes.loginPage);
+                                                          Routes
+                                                              .verifyEmailPage);
                                                     })))
                                   ]),
                             ]))

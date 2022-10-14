@@ -28,7 +28,38 @@ class HomeContents extends StatelessWidget {
                     'assets/images/add.png', 'Add Review', Colors.deepOrange),
                 onPressed: () => {
                       if (FirebaseAuth.instance.currentUser != null)
-                        {Navigator.pushNamed(context, Routes.reviewFormPage)}
+                        {
+                          if (FirebaseAuth.instance.currentUser!.emailVerified)
+                            {
+                              Navigator.pushNamed(
+                                  context, Routes.reviewFormPage)
+                            }
+                          else
+                            {
+                              showDialog(
+                                  context: context,
+                                  barrierDismissible:
+                                      false, // disables popup to close if tapped outside popup (need a button to close)
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text(
+                                        "Cannot Submit Review",
+                                      ),
+                                      content: const Text(
+                                          "Must Verify Email to Submit Review"),
+                                      //buttons?
+                                      actions: <Widget>[
+                                        MaterialButton(
+                                          child: const Text("Close"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          }, //closes popup
+                                        ),
+                                      ],
+                                    );
+                                  })
+                            }
+                        }
                       else
                         {
                           showDialog(
